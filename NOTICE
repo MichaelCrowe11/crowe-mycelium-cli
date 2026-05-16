@@ -1,0 +1,14 @@
+Crowe Mycelium
+Copyright 2026 Crowe Logic Inc. and Crowe Mycology LLC.
+
+This product is built on Gemma and includes derivative artifacts of
+Google's Gemma 4 model family. Gemma is provided by Google under the
+Gemma Terms of Use:
+https://ai.google.dev/gemma/terms
+
+The "Gemma 4 Mycelium" derivative retains the Gemma name in its model
+identifier per Google's Gemma naming guidelines for derivative models.
+
+The CLI source code, system prompt, evaluation harness, and fine-tune
+recipe in this repository are released by Crowe Logic Inc. under the
+Apache License, Version 2.0 (see LICENSE).

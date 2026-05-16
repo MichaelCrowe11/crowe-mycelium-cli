@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.env
+.DS_Store
+*.gguf
+
+# Generated training corpus — contains copyrighted source content
+# (Mushroom Grower Vol 1+2, Lion's Mane Commercial SOP). Regenerate
+# locally with: python scripts/prepare_corpus.py
+data/
+
+# LoRA checkpoints + trainer outputs
+lora-gemma-4-mycelium-e4b/
+*.safetensors
+*.bin
+checkpoint-*/
+wandb/
+runs/

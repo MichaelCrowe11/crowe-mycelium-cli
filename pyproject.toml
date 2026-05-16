@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crowe-mycelium"
+version = "0.1.0"
+description = "Crowe Logic CLI for Gemma 4 Mycelium — offline cultivation intelligence built on Gemma 4."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Michael Crowe", email = "michael@crowelogic.com" },
+]
+keywords = ["gemma", "gemma-4", "mycology", "cultivation", "edge-ai", "ollama", "crowe-logic"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "click>=8.1.0",
+    "rich>=14.0.0",
+    "prompt-toolkit>=3.0.0",
+    "httpx>=0.28.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://crowelogic.com"
+Repository = "https://github.com/crowelogic/crowe-mycelium-cli"
+"Model Card" = "https://huggingface.co/crowelogic/gemma-4-mycelium-e4b"
+
+[project.scripts]
+crowe-mycelium = "crowe_mycelium.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["crowe_mycelium*"]
+
+[tool.setuptools.package-data]
+crowe_mycelium = ["registry.json", "system_prompt.txt"]
