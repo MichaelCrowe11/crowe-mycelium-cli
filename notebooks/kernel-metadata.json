@@ -1,0 +1,13 @@
+{
+  "id": "crowelogic/gemma-4-mycelium-lora",
+  "title": "Gemma 4 Mycelium — LoRA Fine-Tune",
+  "code_file": "gemma_4_mycelium_lora.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_internet": "true",
+  "dataset_sources": ["crowelogic/gemma-4-mycelium-corpus"],
+  "competition_sources": [],
+  "kernel_sources": []
+}

@@ -21,3 +21,6 @@ lora-gemma-4-mycelium-e4b/
 checkpoint-*/
 wandb/
 runs/
+
+# Kaggle dataset staging (contains copyrighted source material)
+kaggle-dataset/

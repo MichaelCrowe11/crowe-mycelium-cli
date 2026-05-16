@@ -162,6 +162,7 @@ DATA_PATH = os.environ.get(
     str(next(
         (p for p in [
             "data/instruct.jsonl",
+            "/kaggle/input/gemma-4-mycelium-corpus/instruct.jsonl",
             "/kaggle/input/crowe-mycelium-cli/data/instruct.jsonl",
             "/kaggle/working/instruct.jsonl",
         ] if os.path.exists(p)),
