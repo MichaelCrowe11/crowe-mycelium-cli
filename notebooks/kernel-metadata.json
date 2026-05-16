@@ -1,5 +1,5 @@
 {
-  "id": "crowelogic/gemma-4-mycelium-lora",
+  "id": "crowelogic/gemma-4-mycelium-lora-fine-tune",
   "title": "Gemma 4 Mycelium — LoRA Fine-Tune",
   "code_file": "gemma_4_mycelium_lora.ipynb",
   "language": "python",
