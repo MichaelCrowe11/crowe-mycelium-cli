@@ -25,17 +25,24 @@ import os
 import sys
 import subprocess
 
-# Install only on Kaggle / fresh envs. Skip if running locally with the deps
-# already in a venv.
+# Install dependencies. Gemma 4 is bleeding-edge; Kaggle's pre-installed
+# transformers raises ``KeyError: 'gemma4'`` when loading. Always install
+# transformers from main on Kaggle until a tagged release adds Gemma 4
+# support. The rest are version-pinned to known-compatible releases.
 def _ensure_deps():
+    in_kaggle = "KAGGLE_KERNEL_RUN_TYPE" in os.environ
     try:
-        import transformers, peft, trl, bitsandbytes, datasets, accelerate  # noqa
-        print("deps already installed")
-        return
+        import transformers
+        if hasattr(transformers.models, "gemma4") or not in_kaggle:
+            import peft, trl, bitsandbytes, datasets, accelerate  # noqa
+            print(f"deps already installed (transformers {transformers.__version__})")
+            return
+        print(f"transformers {transformers.__version__} lacks gemma4 — upgrading")
     except ImportError:
         pass
     pkgs = [
-        "transformers>=4.46.0",
+        # transformers from main covers Gemma 4 + Gemma 3 + every recent release.
+        "transformers @ git+https://github.com/huggingface/transformers.git",
         "peft>=0.13.0",
         "trl>=0.12.0",
         "bitsandbytes>=0.44.0",
@@ -77,7 +84,14 @@ if hf_token:
     login(token=hf_token, add_to_git_credential=False)
     print("HF authenticated")
 else:
-    print("WARN: HF_TOKEN not set — gated model load will fail")
+    raise RuntimeError(
+        "HF_TOKEN is not set. Add it as a Kaggle secret named 'HF_TOKEN':\n"
+        "  1. Open this notebook on Kaggle\n"
+        "  2. Add-ons -> Secrets -> Add a new secret\n"
+        "  3. Label: HF_TOKEN, Value: <your hf token from huggingface.co/settings/tokens>\n"
+        "  4. Toggle 'Attached' so the notebook can read it\n"
+        "Gemma 4 is a gated model; loading it without auth will 401."
+    )
 
 # %% [markdown]
 # ## 3. Model + tokenizer
