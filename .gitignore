@@ -24,3 +24,6 @@ runs/
 
 # Kaggle dataset staging (contains copyrighted source material)
 kaggle-dataset/
+
+# Downloaded Kaggle run logs
+*.log
