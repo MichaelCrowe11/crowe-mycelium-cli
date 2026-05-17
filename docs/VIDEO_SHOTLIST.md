@@ -79,7 +79,7 @@
 | t | shot | description | audio |
 |---|---|---|---|
 | 2:00 | P | screen capture: `crowe-mycelium info` — model card prints, base model, license, attribution footer all visible | crisp UI sound |
-| 2:08 | Q | screen capture: Hugging Face model page for `crowelogic/gemma-4-mycelium-e4b` | none |
+| 2:08 | Q | screen capture: Hugging Face model page for `Mcrowe1210/gemma-4-mycelium-e4b` | none |
 | 2:14 | R | screen capture: registry entry showing `family: crowe-logic`, `base: google/gemma-4-e4b` | none |
 | 2:22 | S | back to Michael, direct to camera | clean VO |
 

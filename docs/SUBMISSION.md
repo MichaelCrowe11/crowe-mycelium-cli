@@ -2,7 +2,7 @@
 
 **Track:** Special Tech Track (Offline / Edge AI)
 **Team:** Crowe Logic Inc. (Michael Crowe, sole developer)
-**Model:** [`crowelogic/gemma-4-mycelium-e4b`](https://ollama.com/crowelogic/gemma-4-mycelium-e4b) on Ollama Hub · [`crowelogic/gemma-4-mycelium-e4b-lora`](https://huggingface.co/crowelogic/gemma-4-mycelium-e4b-lora) on HuggingFace
+**Model:** [`Mcrowe1210/gemma-4-mycelium-e4b`](https://ollama.com/Mcrowe1210/gemma-4-mycelium-e4b) on Ollama Hub · [`crowelogic/gemma-4-mycelium-e4b-lora`](https://huggingface.co/crowelogic/gemma-4-mycelium-e4b-lora) on HuggingFace
 **Code:** [github.com/MichaelCrowe11/crowe-mycelium-cli](https://github.com/MichaelCrowe11/crowe-mycelium-cli)
 
 ---
@@ -36,7 +36,7 @@ Three things make it useful where general models aren't:
 **Phase 1 (shipped in this submission):** Modelfile system-prompt overlay encodes Crowe Logic's identity rules and cultivation diagnostic discipline directly into the base Gemma 4 deployment. No weight modification. The behavioral discipline ("never confabulate contamination diagnoses"; "ask for species before diagnosing"; "ground every claim in commercial practice") is enforced through the SYSTEM directive in the Modelfile — a recognized model-customization technique on the Ollama platform.
 **Phase 2 (in progress, post-submission):** QLoRA-style weight fine-tune via Apple MLX on the cultivation corpus. The corpus prep, training script, model card, and Ollama-packaging bridge are all committed in the repo and ready to run. The fine-tune is currently blocked on upstream mlx-lm's handling of Gemma 4 E4B's multimodal attention layout (k_norm + sliding-window k_eq_v structure not yet implemented in mlx-lm 0.31). When that lands or we route through transformers+PEFT on Modal, the LoRA adapter ships as a `v0.2` update at `crowelogic/gemma-4-mycelium-e4b-lora` on HuggingFace.
 **Corpus prep:** stdlib-only Python script (no dependencies on Kaggle, no preinstall) reads markdown + XeLaTeX, strips formatting, chunks on heading boundaries, emits instruction-tuned JSONL (~3k examples / 2.1M chars from the commercial mycology library).
-**Serving:** Packaged as a single Ollama image via the canonical `modelfile/Modelfile`. End-user pulls `crowelogic/gemma-4-mycelium-e4b`, runs `crowe-mycelium chat`, done. Phase 2 will swap the FROM line to point at the LoRA-fused GGUF without breaking the user-facing surface.
+**Serving:** Packaged as a single Ollama image via the canonical `modelfile/Modelfile`. End-user pulls `Mcrowe1210/gemma-4-mycelium-e4b`, runs `crowe-mycelium chat`, done. Phase 2 will swap the FROM line to point at the LoRA-fused GGUF without breaking the user-facing surface.
 
 ## Why it matters (Impact & Vision)
 

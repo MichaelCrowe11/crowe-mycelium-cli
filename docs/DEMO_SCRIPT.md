@@ -16,7 +16,7 @@ The Act 3 demo (0:55 → 2:00 in the video) is the only segment that can't be fa
 pgrep ollama || open -a Ollama && sleep 3
 
 # 3. Model warm in memory (first-run load is 5-6 min; subsequent <1s)
-ollama run crowelogic/gemma-4-mycelium-e4b "ping" >/dev/null
+ollama run Mcrowe1210/gemma-4-mycelium-e4b "ping" >/dev/null
 #   ↑ The model is now resident. The on-camera response will be FAST.
 
 # 4. Terminal cleared, history scrollback emptied (Cmd-K), font size bumped
@@ -83,9 +83,9 @@ The pins on my Lion's Mane block are turning yellow and not developing. What sho
 
 These are non-negotiable; if any fail, re-shoot.
 
-1. **The model must ask a clarifying question, not give a definitive diagnosis on first response.** This is the entire pitch. If the model confidently says "this is Trichoderma" without qualifications, that take is unusable — the Modelfile system prompt didn't load OR you accidentally pulled the base `gemma4:e4b` instead of `crowelogic/gemma-4-mycelium-e4b`. Check with:
+1. **The model must ask a clarifying question, not give a definitive diagnosis on first response.** This is the entire pitch. If the model confidently says "this is Trichoderma" without qualifications, that take is unusable — the Modelfile system prompt didn't load OR you accidentally pulled the base `gemma4:e4b` instead of `Mcrowe1210/gemma-4-mycelium-e4b`. Check with:
    ```bash
-   ollama show crowelogic/gemma-4-mycelium-e4b | head -20
+   ollama show Mcrowe1210/gemma-4-mycelium-e4b | head -20
    ```
    The `SYSTEM` section should contain "Never confabulate contamination diagnoses."
 
@@ -129,7 +129,7 @@ These are the captions referenced in `VIDEO_SHOTLIST.md` Act 3, with timing lock
 | timestamp | text | duration | position |
 |---|---|---|---|
 | 1:00 | `Recorded in airplane mode. The model runs entirely on this laptop.` | 4s | full-width banner, top third |
-| 1:14 | `Gemma 4 Mycelium · crowelogic/gemma-4-mycelium-e4b` | 3s | lower-third, small |
+| 1:14 | `Gemma 4 Mycelium · Mcrowe1210/gemma-4-mycelium-e4b` | 3s | lower-third, small |
 | 1:22 | (no caption — response streams uncovered) | | |
 | 1:55 | `~3 sec to first token · 26 tokens/sec on M4 MacBook` | 4s | lower-right, mono font |
 

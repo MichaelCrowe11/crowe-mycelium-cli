@@ -24,7 +24,7 @@ pipeline_tag: text-generation
 
 Crowe Logic's first open-source model release. Domain-adapted [Google Gemma 4 E4B](https://huggingface.co/google/gemma-4-e4b) for commercial and at-home mushroom cultivation. Trained, tested, and shipped from a single M-series MacBook — the same machine the CLI runs on.
 
-**Adapter only.** Pair with the base model (`google/gemma-4-e4b`) at load time. To run merged + quantized, see the Ollama variant: [`crowelogic/gemma-4-mycelium-e4b`](https://ollama.com/crowelogic/gemma-4-mycelium-e4b).
+**Adapter only.** Pair with the base model (`google/gemma-4-e4b`) at load time. To run merged + quantized, see the Ollama variant: [`Mcrowe1210/gemma-4-mycelium-e4b`](https://ollama.com/Mcrowe1210/gemma-4-mycelium-e4b).
 
 ---
 
@@ -114,8 +114,8 @@ print(tokenizer.decode(out[0][inputs.input_ids.shape[1]:], skip_special_tokens=T
 ### Via Ollama (recommended for offline / edge use)
 
 ```bash
-ollama pull crowelogic/gemma-4-mycelium-e4b
-ollama run crowelogic/gemma-4-mycelium-e4b "Why is my agar plate growing fuzzy green colonies?"
+ollama pull Mcrowe1210/gemma-4-mycelium-e4b
+ollama run Mcrowe1210/gemma-4-mycelium-e4b "Why is my agar plate growing fuzzy green colonies?"
 ```
 
 The Ollama variant is the merged + quantized model — the adapter has already been fused into the base weights and quantized to q4_k_m. Runs entirely on the local machine, no API calls.
