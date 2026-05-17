@@ -49,7 +49,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data"
 MLX_DATA_DIR = REPO_ROOT / "mlx_data"
 ADAPTER_DIR = REPO_ROOT / "adapters" / "gemma-4-mycelium-e4b"
-BASE_MODEL = "google/gemma-4-e4b"
+BASE_MODEL = "/Volumes/Elements/gemma-4-e4b-text-mlx"
 
 # Gemma chat template — same identity-and-role anchor used by the Modelfile.
 SYSTEM = (
