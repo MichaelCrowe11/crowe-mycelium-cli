@@ -25,6 +25,37 @@ import os
 import sys
 import subprocess
 
+# Kaggle's stock PyTorch is built without sm_60, so P100s fail with
+# "Tesla P100-PCIE-16GB with CUDA capability sm_60 is not compatible".
+# Detect P100 via nvidia-smi (no torch import yet) and pin torch to a
+# version that still ships sm_60 wheels BEFORE deps install — otherwise
+# transformers' dep resolver pulls a newer torch and the kernel needs a
+# restart to undo it.
+def _ensure_p100_torch():
+    if "KAGGLE_KERNEL_RUN_TYPE" not in os.environ:
+        return
+    try:
+        gpu = subprocess.check_output(
+            ["nvidia-smi", "--query-gpu=name", "--format=csv,noheader"],
+            text=True, timeout=10,
+        ).strip()
+    except Exception:
+        return
+    if "P100" not in gpu:
+        return
+    if "torch" in sys.modules:
+        raise RuntimeError(
+            "P100 detected but torch is already imported. RESTART THE KERNEL "
+            "(Run -> Restart) and re-run this cell. The P100 needs torch 2.5.1; "
+            "the version Kaggle ships does not include sm_60 wheels."
+        )
+    print(f"P100 detected ({gpu}); pinning torch to 2.5.1 for sm_60 support")
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "-q",
+         "torch==2.5.1", "torchvision==0.20.1", "torchaudio==2.5.1",
+         "--extra-index-url", "https://download.pytorch.org/whl/cu121"]
+    )
+
 # Install dependencies. Gemma 4 is bleeding-edge; Kaggle's pre-installed
 # transformers raises ``KeyError: 'gemma4'`` when loading. Always install
 # transformers from main on Kaggle until a tagged release adds Gemma 4
@@ -51,8 +82,12 @@ def _ensure_deps():
         "sentencepiece",
         "protobuf",
     ]
+    # torch is intentionally pinned earlier by _ensure_p100_torch; pip will
+    # honor that pin (transformers' torch constraint is satisfied by 2.5.1)
+    # so this install doesn't undo the sm_60-compatible torch on P100.
     subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", *pkgs])
 
+_ensure_p100_torch()
 _ensure_deps()
 
 import torch
@@ -61,6 +96,8 @@ print(f"cuda available: {torch.cuda.is_available()}")
 if torch.cuda.is_available():
     print(f"gpu: {torch.cuda.get_device_name(0)}")
     print(f"vram total: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f}GB")
+    cap = torch.cuda.get_device_capability(0)
+    print(f"compute capability: sm_{cap[0]}{cap[1]}")
 
 # %% [markdown]
 # ## 2. HuggingFace authentication
