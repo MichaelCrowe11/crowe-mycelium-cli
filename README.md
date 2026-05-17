@@ -14,9 +14,7 @@ It is the first open-sourced model in the Crowe Logic family. The model lives on
 ## Install
 
 ```bash
-pip install crowe-mycelium
-# or, from source:
-git clone https://github.com/crowelogic/crowe-mycelium-cli
+git clone https://github.com/MichaelCrowe11/crowe-mycelium-cli
 cd crowe-mycelium-cli && pip install -e .
 ```
 
@@ -25,13 +23,13 @@ You'll also need Ollama running locally:
 ```bash
 brew install ollama
 ollama serve &
-ollama pull crowelogic/gemma-4-mycelium-e4b
+ollama pull Mcrowe1210/gemma-4-mycelium-e4b
 ```
 
 To build the model locally from the published Gemma 4 weights instead of pulling:
 
 ```bash
-ollama create crowelogic/gemma-4-mycelium-e4b -f modelfile/Modelfile
+ollama create Mcrowe1210/gemma-4-mycelium-e4b -f modelfile/Modelfile
 ```
 
 ## Use

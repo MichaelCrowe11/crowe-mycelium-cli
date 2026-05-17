@@ -27,3 +27,10 @@ kaggle-dataset/
 
 # Downloaded Kaggle run logs
 *.log
+
+# Generated video artifacts (large; regenerate via scripts/video/)
+video/audio/
+video/source/
+video/synced/
+video/screencap/
+video/final*.mp4

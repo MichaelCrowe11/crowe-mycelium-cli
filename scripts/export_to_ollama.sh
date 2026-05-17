@@ -19,7 +19,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEFAULT_GGUF="${REPO_ROOT}/gemma-4-mycelium-e4b.gguf"
 GGUF_PATH="${1:-$DEFAULT_GGUF}"
 MODELFILE_DST="${REPO_ROOT}/modelfile/Modelfile.local"
-OLLAMA_TAG="crowelogic/gemma-4-mycelium-e4b"
+OLLAMA_TAG="Mcrowe1210/gemma-4-mycelium-e4b"
 
 if [[ ! -f "$GGUF_PATH" ]]; then
     echo "GGUF not found at: $GGUF_PATH"

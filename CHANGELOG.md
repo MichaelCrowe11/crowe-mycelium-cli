@@ -14,7 +14,7 @@ Initial release. Built for the [Gemma 4 Good Hackathon](https://kaggle.com/compe
 
 - `crowe-mycelium` CLI with `chat` / `run` / `info` / `models` subcommands.
 - Backend client wrapping Ollama via `httpx`, with `OLLAMA_HOST` override.
-- Modelfile (`modelfile/Modelfile`) producing the `crowelogic/gemma-4-mycelium-e4b`
+- Modelfile (`modelfile/Modelfile`) producing the `Mcrowe1210/gemma-4-mycelium-e4b`
   tag from the Gemma 4 E4B base. Bakes in the Crowe Logic cultivation system
   prompt and sampling defaults tuned for grounded mycology answers (temp
   0.4, top-p 0.9, ctx 8192).
@@ -36,7 +36,7 @@ Initial release. Built for the [Gemma 4 Good Hackathon](https://kaggle.com/compe
 
 - **Phase 1** (this release): Gemma 4 E4B base + Crowe Logic system-prompt
   overlay via Modelfile. No weight modification. Ships as the canonical
-  `crowelogic/gemma-4-mycelium-e4b` Ollama tag for cultivation queries.
+  `Mcrowe1210/gemma-4-mycelium-e4b` Ollama tag for cultivation queries.
 - **Phase 2** (LoRA training in progress): adapter fine-tune on the
   commercial cultivation corpus. Will replace the system-prompt-only
   Modelfile with a merged GGUF when training completes.

@@ -325,7 +325,7 @@ else:
 #
 # # Then point the project Modelfile at the GGUF:
 # # FROM ./gemma-4-mycelium-e4b.gguf
-# # ollama create crowelogic/gemma-4-mycelium-e4b -f modelfile/Modelfile
+# # ollama create Mcrowe1210/gemma-4-mycelium-e4b -f modelfile/Modelfile
 
 # %% [markdown]
 # ## 10. Final notes

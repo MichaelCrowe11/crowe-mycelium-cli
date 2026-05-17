@@ -14,8 +14,8 @@
       "base_model_provider": "google",
       "license": "Gemma Terms of Use",
       "license_url": "https://ai.google.dev/gemma/terms",
-      "huggingface_repo": "crowelogic/gemma-4-mycelium-e4b",
-      "ollama_tag": "crowelogic/gemma-4-mycelium-e4b",
+      "huggingface_repo": "crowelogic/gemma-4-mycelium-e4b-lora",
+      "ollama_tag": "Mcrowe1210/gemma-4-mycelium-e4b",
       "context_window": 8192,
       "aliases": [
         "mycelium",

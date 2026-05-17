@@ -29,7 +29,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
 MERGED_DIR="${REPO_ROOT}/merged-gemma-4-mycelium-e4b"
-OLLAMA_TAG="crowelogic/gemma-4-mycelium-e4b"
+OLLAMA_TAG="Mcrowe1210/gemma-4-mycelium-e4b"
 USE_GGUF=0
 
 while [[ $# -gt 0 ]]; do
