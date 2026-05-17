@@ -73,9 +73,19 @@ def _ensure_deps() -> None:
 
 
 def _ensure_hf_auth() -> None:
-    """Bootstrap HF auth from ~/.env.secrets if not already logged in."""
-    from huggingface_hub import HfFolder, login
-    if HfFolder.get_token():
+    """Bootstrap HF auth from ~/.env.secrets if not already logged in.
+
+    ``huggingface_hub`` 1.x removed ``HfFolder``; use ``get_token()`` from
+    the top-level module (or fall back to ``HF_TOKEN`` env-var detection,
+    which the hub library checks automatically on unauthenticated calls).
+    """
+    try:
+        from huggingface_hub import get_token, login
+    except ImportError:  # very-old hub
+        from huggingface_hub import login
+        def get_token():
+            return os.environ.get("HF_TOKEN")
+    if get_token() or os.environ.get("HF_TOKEN"):
         return
     env_path = Path.home() / ".env.secrets"
     if not env_path.exists():
@@ -152,18 +162,19 @@ def train(args: argparse.Namespace) -> int:
     # directly rather than re-implementing — that way upstream improvements
     # land in our pipeline for free.
     cmd = [
-        sys.executable, "-m", "mlx_lm.lora",
+        sys.executable, "-m", "mlx_lm", "lora",
         "--model", BASE_MODEL,
         "--train",
         "--data", str(MLX_DATA_DIR),
         "--adapter-path", str(ADAPTER_DIR),
         "--iters", str(args.iters),
         "--batch-size", str(args.batch_size),
-        "--lora-layers", str(args.lora_layers),
+        "--num-layers", str(args.lora_layers),
         "--steps-per-eval", str(args.eval_every),
         "--learning-rate", str(args.learning_rate),
         "--save-every", str(args.save_every),
-        "--seed", "0xc0ffee",
+        "--seed", str(0xc0ffee),  # = 12648430; mlx-lm wants a decimal int
+        "--grad-checkpoint",      # essential to fit Gemma 4 E4B in unified RAM
     ]
     if args.resume:
         cmd.append("--resume-adapter-file")
@@ -183,7 +194,7 @@ def fuse(args: argparse.Namespace) -> int:
     if out.exists():
         shutil.rmtree(out)
     cmd = [
-        sys.executable, "-m", "mlx_lm.fuse",
+        sys.executable, "-m", "mlx_lm", "fuse",
         "--model", BASE_MODEL,
         "--adapter-path", str(ADAPTER_DIR),
         "--save-path", str(out),
@@ -200,7 +211,7 @@ def chat(args: argparse.Namespace) -> int:
     """Interactive chat against the local adapter — sanity-check before fusing."""
     _ensure_deps()
     cmd = [
-        sys.executable, "-m", "mlx_lm.generate",
+        sys.executable, "-m", "mlx_lm", "generate",
         "--model", BASE_MODEL,
         "--adapter-path", str(ADAPTER_DIR),
         "--prompt", args.prompt,
