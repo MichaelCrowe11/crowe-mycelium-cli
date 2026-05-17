@@ -33,4 +33,7 @@ video/audio/
 video/source/
 video/synced/
 video/screencap/
+video/final/
+video/draft/
+video/cover_candidates/
 video/final*.mp4
