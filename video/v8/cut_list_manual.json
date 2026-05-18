@@ -2,6 +2,16 @@
   "_notes": "Hand-curated v8 cut list. Real Michael audio for Act 1 cold-open. ElevenLabs VO for Acts 2/4/5 layered over silent B-roll. Act 3 is the live screen capture (separate manual recording).",
   "scenes": [
     {
+      "act": 4,
+      "slot": "michael_close",
+      "video_id": "80r6ybTjR9c",
+      "video_hint": "Q&A Michael close-up for lipsync",
+      "in_sec": 0.0,
+      "out_sec": 18.0,
+      "audio_mode": "mute",
+      "comment": "Re-added for MuseTalk lipsync attempt v2"
+    },
+    {
       "act": 1,
       "slot": "intro",
       "video_id": "80r6ybTjR9c",
