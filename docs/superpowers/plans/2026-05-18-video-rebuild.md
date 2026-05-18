@@ -13,30 +13,30 @@
 ## File structure
 
 **New files:**
-- `scripts/video/v8/00_setup.sh` — verify deno+yt-dlp+whisper-cli+ffmpeg present, mount Elements, create dirs
-- `scripts/video/v8/01_pull_archive.sh` — yt-dlp pull from SWM channel to Elements scratch dir
-- `scripts/video/v8/02_transcribe.sh` — whisper-cli on each pulled video, emit JSON
-- `scripts/video/v8/03_match.py` — match 5-act script lines to (video, in, out) tuples; emit cut_list.json
-- `scripts/video/v8/04_cut.sh` — read cut_list.json, ffmpeg -ss/-to/-c copy lossless cuts
-- `scripts/video/v8/05_cards.py` — Pillow renders title.png, end.png, lower_third.png at 1920x1080
-- `scripts/video/v8/06_act3_record.md` — runbook for the manual Act 3 screen capture
-- `scripts/video/v8/07_assemble.sh` — concat scenes, overlay cards, mix audio, burn subs
-- `scripts/video/v8/cut_list.template.json` — schema for the matcher output
-- `scripts/video/v8/scripts.json` — the 5-act script text (matcher input)
-- `tests/video/test_match.py` — pytest for the matcher
-- `tests/video/test_cards.py` — pytest for card rendering
+- `scripts/video/v8/00_setup.sh` - verify deno+yt-dlp+whisper-cli+ffmpeg present, mount Elements, create dirs
+- `scripts/video/v8/01_pull_archive.sh` - yt-dlp pull from SWM channel to Elements scratch dir
+- `scripts/video/v8/02_transcribe.sh` - whisper-cli on each pulled video, emit JSON
+- `scripts/video/v8/03_match.py` - match 5-act script lines to (video, in, out) tuples; emit cut_list.json
+- `scripts/video/v8/04_cut.sh` - read cut_list.json, ffmpeg -ss/-to/-c copy lossless cuts
+- `scripts/video/v8/05_cards.py` - Pillow renders title.png, end.png, lower_third.png at 1920x1080
+- `scripts/video/v8/06_act3_record.md` - runbook for the manual Act 3 screen capture
+- `scripts/video/v8/07_assemble.sh` - concat scenes, overlay cards, mix audio, burn subs
+- `scripts/video/v8/cut_list.template.json` - schema for the matcher output
+- `scripts/video/v8/scripts.json` - the 5-act script text (matcher input)
+- `tests/video/test_match.py` - pytest for the matcher
+- `tests/video/test_cards.py` - pytest for card rendering
 
 **New directories:**
-- `video/v8/` — working dir for the v8 build
-- `video/v8/scenes/` — cut clips per act
-- `video/v8/cards/` — generated 1080p cards
-- `video/v8/subtitles.srt` — burned-in subtitle source
-- `video/final/film_v8.mp4` — final output
-- `/Volumes/Elements/swm-yt-archive-2026-05-18/` — yt-dlp scratch (NOT /tmp, per memory)
-- `/Volumes/Elements/swm-yt-archive-2026-05-18/transcripts/` — whisper JSON output
+- `video/v8/` - working dir for the v8 build
+- `video/v8/scenes/` - cut clips per act
+- `video/v8/cards/` - generated 1080p cards
+- `video/v8/subtitles.srt` - burned-in subtitle source
+- `video/final/film_v8.mp4` - final output
+- `/Volumes/Elements/swm-yt-archive-2026-05-18/` - yt-dlp scratch (NOT /tmp, per memory)
+- `/Volumes/Elements/swm-yt-archive-2026-05-18/transcripts/` - whisper JSON output
 
 **Modified files:**
-- `docs/SUBMISSION.md` — replace `<!-- PASTE_YOUTUBE_URL_HERE -->` after upload
+- `docs/SUBMISSION.md` - replace `<!-- PASTE_YOUTUBE_URL_HERE -->` after upload
 
 ---
 
@@ -941,9 +941,9 @@ git commit -m "v8: Pillow card renderer (title/end/lower-third) with tests"
 
 The candidates are in `~/Music/Music/Media.localized/Music/Michael Crowe/Substrate/`. Per the spec and the "no sung vocals" criterion (so VO sits on top cleanly), shortlist:
 
-- `05 Velvet Algorithm.mp3` — title fits the AI/cultivation theme directly
-- `11 Cosmic Consciousness.mp3` — likely instrumental-feel
-- `12 One Floor Below the Dawn.mp3` — calm epilogue, F#m 66 BPM per memory
+- `05 Velvet Algorithm.mp3` - title fits the AI/cultivation theme directly
+- `11 Cosmic Consciousness.mp3` - likely instrumental-feel
+- `12 One Floor Below the Dawn.mp3` - calm epilogue, F#m 66 BPM per memory
 
 - [ ] **Step 1: Audition first 30s of each candidate**
 
@@ -996,7 +996,7 @@ Create `scripts/video/v8/06_act3_record.md`:
 Full pre-shoot procedure: `docs/DEMO_SCRIPT.md`.
 
 ## Quick checklist
-1. Mac in airplane mode (Wi-Fi off, Bluetooth off — visible in menu bar)
+1. Mac in airplane mode (Wi-Fi off, Bluetooth off - visible in menu bar)
 2. `pgrep ollama || open -a Ollama && sleep 3`
 3. Warm model: `ollama run Mcrowe1210/gemma-4-mycelium-e4b "ping" >/dev/null`
 4. iTerm at large font, clear scrollback (Cmd-K)
