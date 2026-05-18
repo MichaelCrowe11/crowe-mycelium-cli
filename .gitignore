@@ -1,39 +1,41 @@
-.venv/
+
 __pycache__/
-*.pyc
-*.egg-info/
-build/
-dist/
-.pytest_cache/
-.env
 .DS_Store
-*.gguf
-
-# Generated training corpus — contains copyrighted source content
-# (Mushroom Grower Vol 1+2, Lion's Mane Commercial SOP). Regenerate
-# locally with: python scripts/prepare_corpus.py
-data/
-
-# LoRA checkpoints + trainer outputs
-lora-gemma-4-mycelium-e4b/
-*.safetensors
+.env
+.pytest_cache/
+.venv/
 *.bin
-checkpoint-*/
-wandb/
-runs/
-
-# Kaggle dataset staging (contains copyrighted source material)
-kaggle-dataset/
-
-# Downloaded Kaggle run logs
+*.egg-info/
+*.gguf
 *.log
-
+*.pyc
+*.safetensors
+# (Mushroom Grower Vol 1+2, Lion's Mane Commercial SOP). Regenerate
+# Downloaded Kaggle run logs
+# Generated training corpus — contains copyrighted source content
 # Generated video artifacts (large; regenerate via scripts/video/)
+# Kaggle dataset staging (contains copyrighted source material)
+# locally with: python scripts/prepare_corpus.py
+# LoRA checkpoints + trainer outputs
+build/
+checkpoint-*/
+data/
+dist/
+kaggle-dataset/
+lora-gemma-4-mycelium-e4b/
+runs/
 video/audio/
+video/cover_candidates/
+video/draft/
+video/final*.mp4
+video/final/
+video/screencap/
 video/source/
 video/synced/
-video/screencap/
-video/final/
-video/draft/
-video/cover_candidates/
-video/final*.mp4
+video/v8/concat.mp4
+video/v8/concat.txt
+video/v8/end.mp4
+video/v8/music.mp3
+video/v8/scenes/
+video/v8/title.mp4
+wandb/
