@@ -1,0 +1,91 @@
+1
+00:00:05,000 --> 00:00:09,000
+My name is Michael Crowe
+
+2
+00:00:09,000 --> 00:00:14,000
+and I own Southwest Mushrooms.
+
+3
+00:00:14,000 --> 00:00:19,000
+Here we cultivate a wide variety
+
+4
+00:00:19,000 --> 00:00:23,000
+of gourmet and medicinal mushrooms.
+
+5
+00:00:23,000 --> 00:00:27,000
+I started when I was about fifteen,
+
+6
+00:00:27,000 --> 00:00:30,000
+I just got interested in mushrooms.
+
+7
+00:00:30,000 --> 00:00:32,943
+Most AI tools assume the user is in an office.
+
+8
+00:00:33,098 --> 00:00:35,886
+Growers, farmers, anyone running a real operation,
+
+9
+00:00:36,196 --> 00:00:38,829
+we don't get that. The connection is bad.
+
+10
+00:00:39,294 --> 00:00:41,772
+The data is private. The question has to be answered
+
+11
+00:00:42,392 --> 00:00:44,716
+in the next ten minutes, not after a sync.
+
+12
+00:01:00,000 --> 00:01:02,870
+Gemma 4 Mycelium is built on Google's Gemma 4.
+
+13
+00:01:03,021 --> 00:01:05,740
+It's the first open-source model in the Crowe Logic family.
+
+14
+00:01:06,042 --> 00:01:08,611
+The fine-tune comes from our commercial cultivation library:
+
+15
+00:01:09,064 --> 00:01:11,481
+Lion's Mane SOP, the Mushroom Grower volumes,
+
+16
+00:01:12,085 --> 00:01:14,352
+telemetry from our environmental engine.
+
+17
+00:01:15,107 --> 00:01:17,222
+Released under the Gemma Terms of Use.
+
+18
+00:01:30,000 --> 00:01:32,208
+Every operator I know has a question
+
+19
+00:01:32,324 --> 00:01:34,417
+they can't ask a chatbot a thousand miles away.
+
+20
+00:01:34,649 --> 00:01:36,625
+We started with mushrooms.
+
+21
+00:01:36,974 --> 00:01:38,834
+The next models in the Crowe Logic family
+
+22
+00:01:39,299 --> 00:01:41,043
+will start with whoever shows me their grow room next.
+
+23
+00:01:41,624 --> 00:01:43,251
+Built on Gemma. Made for the work.
