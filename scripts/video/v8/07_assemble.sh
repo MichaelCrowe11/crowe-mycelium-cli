@@ -33,13 +33,11 @@ ACT3_PATH="$SCENES/act3_demo.mp4"
 # If a lipsynced version of act4 exists, use it (audio already baked in).
 ACT4_LIPSYNC="$SCENES/act4_lipsync.mp4"
 if [[ -f "$ACT4_LIPSYNC" ]]; then
-  ACT4_PATH="$ACT4_LIPSYNC"
   ACT4_USE_LIPSYNC=1
   echo ">> using lipsync output for Act 4: $ACT4_LIPSYNC"
 else
-  ACT4_PATH="$SCENES/act4_michael_close.mp4"
   ACT4_USE_LIPSYNC=0
-  echo ">> Act 4 falls back to muted original + EL VO overlay"
+  echo ">> Act 4 uses muted B-roll + EL VO overlay (multi-scene glob)"
 fi
 
 # ---------- 1. Render title and end cards to mp4 ----------
@@ -61,7 +59,13 @@ CONCAT="$V8/concat.txt"
   if [[ "$INCLUDE_ACT3" == "1" && -f "$ACT3_PATH" ]]; then
     echo "file '$(pwd)/$ACT3_PATH'"
   fi
-  echo "file '$(pwd)/$ACT4_PATH'"
+  if [[ "$ACT4_USE_LIPSYNC" == "1" ]]; then
+    echo "file '$(pwd)/$ACT4_LIPSYNC'"
+  else
+    for f in "$SCENES"/act4_*.mp4; do
+      [[ -f "$f" && "$f" != *"_lipsync.mp4" ]] && echo "file '$(pwd)/$f'"
+    done
+  fi
   echo "file '$(pwd)/$SCENES/act5_vision_journey.mp4'"
   echo "file '$(pwd)/$SCENES/act5_vision_wide.mp4'"
   echo "file '$(pwd)/$V8/end.mp4'"
@@ -211,27 +215,17 @@ ffmpeg -y -loglevel error \
   -map "[final]" -c:a aac -b:a 192k -ar 48000 -ac 2 "$V8/audio_mix.m4a"
 
 # ---------- 7. Mux audio with concat video + burn subtitles if present ----------
-if [[ -f "$V8/subtitles.srt" ]]; then
-  ffmpeg -y -loglevel error \
-    -i "$V8/concat_video.mp4" \
-    -i "$V8/audio_mix.m4a" \
-    -filter_complex "[0:v]subtitles=$V8/subtitles.srt:force_style='Fontsize=22,Outline=1,Shadow=0,Alignment=2,MarginV=60'[vout]" \
-    -map "[vout]" -map "1:a" \
-    -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p \
-    -c:a copy \
-    -movflags +faststart \
-    -shortest \
-    "$OUT"
-else
-  ffmpeg -y -loglevel error \
-    -i "$V8/concat_video.mp4" \
-    -i "$V8/audio_mix.m4a" \
-    -c:v copy \
-    -c:a copy \
-    -movflags +faststart \
-    -shortest \
-    "$OUT"
-fi
+# Note: brew ffmpeg lacks libass, so we skip burn-in subtitles.
+# YouTube will display video/v8/subtitles.srt as a CC track when uploaded
+# alongside the mp4.
+ffmpeg -y -loglevel error \
+  -i "$V8/concat_video.mp4" \
+  -i "$V8/audio_mix.m4a" \
+  -c:v copy \
+  -c:a copy \
+  -movflags +faststart \
+  -shortest \
+  "$OUT"
 
 echo ""
 echo ">> wrote $OUT"

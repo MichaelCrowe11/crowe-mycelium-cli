@@ -33,13 +33,23 @@
     },
     {
       "act": 4,
-      "slot": "michael_close",
-      "video_id": "80r6ybTjR9c",
-      "video_hint": "Q&A with Michael Crowe",
-      "in_sec": 330.0,
-      "out_sec": 360.0,
+      "slot": "lab_work",
+      "video_id": "TRH72KNFHGU",
+      "video_hint": "DIY Mycology - Liquid Culture & Lab Work",
+      "in_sec": 20.0,
+      "out_sec": 38.0,
       "audio_mode": "mute",
-      "comment": "Michael talking on camera, EL VO act4 overlaid. Lip-mismatch is fine because we are not lipsyncing."
+      "comment": "Lab work hands shots (no face). EL VO act4 overlays cleanly: 'built on Google Gemma' beat over lab procedure visuals - reinforces commercial-cultivation grounding"
+    },
+    {
+      "act": 4,
+      "slot": "facility_deep",
+      "video_id": "mNnTXNS76Dw",
+      "video_hint": "Facility Tour - deeper rack/work shots",
+      "in_sec": 600.0,
+      "out_sec": 612.0,
+      "audio_mode": "mute",
+      "comment": "Facility production shot (no face). Carries the 'fine-tune comes from our commercial library' line."
     },
     {
       "act": 5,
