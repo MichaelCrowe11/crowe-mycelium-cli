@@ -30,6 +30,18 @@ mkdir -p video/final
 INCLUDE_ACT3="${INCLUDE_ACT3:-1}"
 ACT3_PATH="$SCENES/act3_demo.mp4"
 
+# If a lipsynced version of act4 exists, use it (audio already baked in).
+ACT4_LIPSYNC="$SCENES/act4_lipsync.mp4"
+if [[ -f "$ACT4_LIPSYNC" ]]; then
+  ACT4_PATH="$ACT4_LIPSYNC"
+  ACT4_USE_LIPSYNC=1
+  echo ">> using lipsync output for Act 4: $ACT4_LIPSYNC"
+else
+  ACT4_PATH="$SCENES/act4_michael_close.mp4"
+  ACT4_USE_LIPSYNC=0
+  echo ">> Act 4 falls back to muted original + EL VO overlay"
+fi
+
 # ---------- 1. Render title and end cards to mp4 ----------
 ffmpeg -y -loglevel error -loop 1 -i "$CARDS/title.png" -t 5 \
   -c:v libx264 -pix_fmt yuv420p -r 30 -vf "scale=1920:1080" \
@@ -49,7 +61,7 @@ CONCAT="$V8/concat.txt"
   if [[ "$INCLUDE_ACT3" == "1" && -f "$ACT3_PATH" ]]; then
     echo "file '$(pwd)/$ACT3_PATH'"
   fi
-  echo "file '$(pwd)/$SCENES/act4_michael_close.mp4'"
+  echo "file '$(pwd)/$ACT4_PATH'"
   echo "file '$(pwd)/$SCENES/act5_vision_journey.mp4'"
   echo "file '$(pwd)/$SCENES/act5_vision_wide.mp4'"
   echo "file '$(pwd)/$V8/end.mp4'"
@@ -60,7 +72,7 @@ CONCAT="$V8/concat.txt"
 # Title/end have -an; act1 has audio; acts 2/4/5 are muted; act3 keeps audio.
 # After concat, we will rebuild the audio track from scratch.
 ffmpeg -y -loglevel error -f concat -safe 0 -i "$CONCAT" \
-  -c:v copy -an \
+  -c:v copy -c:a aac -b:a 192k \
   "$V8/concat_video.mp4"
 
 # Get total duration of concat video
@@ -88,10 +100,21 @@ else
   ACT3_DUR=0
 fi
 
-# Convert ElevenLabs mp3s to wav for consistent processing
-for act in 2 4 5; do
+# Convert ElevenLabs mp3s to wav for consistent processing.
+# Skip act4 if lipsync output already has the VO baked in.
+EL_ACTS=(2 5)
+if [[ "$ACT4_USE_LIPSYNC" == "0" ]]; then
+  EL_ACTS=(2 4 5)
+fi
+for act in "${EL_ACTS[@]}"; do
   ffmpeg -y -loglevel error -i "$AUDIO/act${act}.mp3" -ac 2 -ar 48000 "$V8/act${act}_audio.wav"
 done
+
+# When using lipsync for Act 4, extract the baked-in audio so we can put
+# it on the same timeline as everything else.
+if [[ "$ACT4_USE_LIPSYNC" == "1" ]]; then
+  ffmpeg -y -loglevel error -i "$ACT4_PATH" -vn -ac 2 -ar 48000 "$V8/act4_audio.wav"
+fi
 
 # Compute timing offsets (in seconds)
 T_TITLE_END=5
