@@ -10,6 +10,11 @@ echo "   into $SCRATCH/videos"
 
 # 1080p mp4, embed metadata, write info JSON, cap at N videos.
 # --download-archive prevents re-downloads on re-run.
+mkdir -p /tmp/yt-dlp-temp
+
+# Two-path strategy: keep ffmpeg merger temp on /tmp (local SSD, no quirks),
+# move finished files to Elements. Avoids the "Permission denied" issue
+# that hits when merger temp lands on the external drive.
 yt-dlp \
   --format "bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4]/best" \
   --merge-output-format mp4 \
@@ -17,9 +22,11 @@ yt-dlp \
   --write-auto-subs \
   --sub-lang en \
   --convert-subs srt \
+  --paths "temp:/tmp/yt-dlp-temp" \
+  --paths "home:$SCRATCH/videos" \
   --download-archive "$SCRATCH/archive.txt" \
   --playlist-end "$N" \
-  --output "$SCRATCH/videos/%(upload_date)s_%(title).100B_%(id)s.%(ext)s" \
+  --output "%(upload_date)s_%(title).80B_%(id)s.%(ext)s" \
   --no-overwrites \
   "$CHANNEL"
 
