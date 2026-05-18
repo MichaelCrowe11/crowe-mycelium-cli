@@ -1,0 +1,64 @@
+{
+  "acts": [
+    {
+      "act": 1,
+      "window_start": 0,
+      "window_end": 25,
+      "lines": [
+        "growing mushrooms commercially for years",
+        "questions a grower needs answered",
+        "five-bar wifi",
+        "contamination on the line"
+      ],
+      "broll_keywords": ["contaminated", "agar", "trichoderma", "petri", "grow room"]
+    },
+    {
+      "act": 2,
+      "window_start": 25,
+      "window_end": 55,
+      "lines": [
+        "AI tools assume the user is sitting in an office",
+        "growers farmers",
+        "the connection is bad",
+        "answered in the next ten minutes",
+        "cloud AI doesn't show up here"
+      ],
+      "broll_keywords": ["facility", "no signal", "rural", "tunnel house", "fruiting room"]
+    },
+    {
+      "act": 3,
+      "window_start": 55,
+      "window_end": 120,
+      "lines": [],
+      "broll_keywords": ["live screen recording, sourced separately"]
+    },
+    {
+      "act": 4,
+      "window_start": 120,
+      "window_end": 150,
+      "lines": [
+        "built on Google's Gemma",
+        "first open-source model",
+        "Crowe Logic family",
+        "commercial cultivation library",
+        "Lion's Mane SOP",
+        "Mushroom Grower"
+      ],
+      "broll_keywords": ["laptop", "terminal", "screen", "direct to camera"]
+    },
+    {
+      "act": 5,
+      "window_start": 150,
+      "window_end": 180,
+      "lines": [
+        "every operator I know",
+        "chatbot a thousand miles away",
+        "started with mushrooms",
+        "next models in the Crowe Logic family",
+        "show me their grow room",
+        "made for the work"
+      ],
+      "broll_keywords": ["wide facility", "racks", "harvest", "direct to camera"]
+    }
+  ]
+}
