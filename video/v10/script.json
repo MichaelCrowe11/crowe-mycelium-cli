@@ -1,0 +1,36 @@
+{
+  "title": "Gemma 4 Mycelium - Offline Grow Room Triage",
+  "music": "08 - The Engine's Reply - Album Master.mp3",
+  "acts": [
+    {
+      "act": 1,
+      "slug": "cold-open",
+      "target_seconds": 22,
+      "text": "This is not a chatbot demo in an office. This is the place the model was built for: a grow room at Southwest Mushrooms. A contamination question shows up while the room is hot, wet, and the internet is unreliable. A wrong answer costs blocks, time, and trust."
+    },
+    {
+      "act": 2,
+      "slug": "use-case",
+      "target_seconds": 30,
+      "text": "The use case is simple. A grower sees pink wet spots on a lion's mane block and needs triage before touching the clean bench. Gemma 4 Mycelium runs on the laptop in the room. It does not name a pathogen from one clue. It asks for species, inoculation source, odor, texture, timeline, and photos, then gives the safest next action."
+    },
+    {
+      "act": 3,
+      "slug": "workflow",
+      "target_seconds": 46,
+      "text": "In the mobile workflow, the operator captures the question, toggles offline mode, and sends it to the local Gemma 4 Mycelium model. The answer is conservative by design: isolate the suspect block, do not open it near clean culture, photograph the pattern, mark spread, check whether it is yeast-like, bacterial, or metabolite staining, and only transfer from clean growth if the source plate is still viable."
+    },
+    {
+      "act": 4,
+      "slug": "model",
+      "target_seconds": 33,
+      "text": "That behavior comes from the system overlay and the cultivation corpus: Lion's Mane SOP, The Mushroom Grower volumes, and the operating knowledge behind Southwest Mushrooms. The first shipping artifact is honest Phase 1: an Ollama image and CLI people can run today. Phase 2 LoRA is scripted and documented for the moment Gemma 4 support lands cleanly."
+    },
+    {
+      "act": 5,
+      "slug": "close",
+      "target_seconds": 22,
+      "text": "I started with mushrooms because this is my work. But the pattern is bigger: edge models for operators who cannot wait for a cloud assistant. Built on Gemma. Runs locally. Made for the room where the decision happens."
+    }
+  ]
+}

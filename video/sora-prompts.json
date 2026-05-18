@@ -1,0 +1,38 @@
+[
+  {
+    "out": "01-mycelium-macro.mp4",
+    "seconds": 8,
+    "size": "1280x720",
+    "prompt": "Extreme macro shot, pure white branching mycelium hyphae growing across dark moist substrate, slow focus pull along a single hypha as it splits and branches. Pitch black background, single soft amber side light, anamorphic shallow depth of field, microscopic moisture droplets glistening on the hyphae, scientific documentary aesthetic, 35mm film grain, contemplative slow pacing, no text overlays, no logos."
+  },
+  {
+    "out": "02-fruiting-chamber.mp4",
+    "seconds": 8,
+    "size": "1280x720",
+    "prompt": "Wide cinematic tracking shot through a commercial mushroom fruiting chamber at dawn, vertical racks of substrate blocks producing clusters of pale lion's mane mushrooms, cool blue grow light from above, dense humidity haze drifting through frame, slow camera dolly forward at chest height, anamorphic lens flare on the highlights, shallow depth of field shifts from foreground mist to deep rack interiors, documentary realism, 35mm look, no people visible, no text overlays."
+  },
+  {
+    "out": "03-datacenter-cold.mp4",
+    "seconds": 8,
+    "size": "1280x720",
+    "prompt": "Hyperreal cinematic wide shot of a vast empty hyperscale datacenter aisle at night, infinite parallel rows of black server racks with cold blue LED indicators stretching to vanishing point, low ground fog drifts across the polished floor, single distant amber warning light pulsing at the end of the aisle, slow tracking shot with subtle anamorphic flare. Sense of isolation and disconnection, documentary realism, 35mm cinematic color grade, no people, no text overlays, no logos."
+  },
+  {
+    "out": "04-farmer-hands-substrate.mp4",
+    "seconds": 8,
+    "size": "1280x720",
+    "prompt": "Close-up macro shot of weathered farmer hands gently breaking apart a clump of dense white mycelium-colonized substrate, soft natural window light raking from the left, the mycelium fibers stretch and tear like cotton, slow upward tilt reveals the rich texture of the mycelial network. Shallow depth of field, warm organic color grade, 35mm cinematic look, documentary aesthetic, no text, no logos."
+  },
+  {
+    "out": "05-mycelium-neural-morph.mp4",
+    "seconds": 8,
+    "size": "1280x720",
+    "prompt": "Slow abstract cinematic macro shot: bioluminescent white mycelium network branching across pitch black substrate gradually transforms into a glowing pale-blue neural network graph with identical branching topology, nodes pulse softly with light, then the graph morphs back into living mycelium. Single soft blue rim light, deep macro depth of field, dust motes in the air, documentary-realism with subtle CGI overlay, 35mm grain, contemplative pacing, no text, no logos, no UI."
+  },
+  {
+    "out": "06-desert-lab-sunrise.mp4",
+    "seconds": 8,
+    "size": "1280x720",
+    "prompt": "Aerial drone shot rising slowly over a small Arizona desert mushroom research facility at sunrise, single low corrugated metal building reflecting the first warm light, saguaro cacti and rocky mountains in the distance, faint dust haze diffusing the rising sun, the camera ascends and tilts to reveal the surrounding desert emptiness. Cinematic anamorphic 2.39:1 framing, warm gold tones, documentary realism, 35mm look, no text, no logos, no visible people."
+  }
+]

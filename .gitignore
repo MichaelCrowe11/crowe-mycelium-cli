@@ -12,7 +12,7 @@ __pycache__/
 *.safetensors
 # (Mushroom Grower Vol 1+2, Lion's Mane Commercial SOP). Regenerate
 # Downloaded Kaggle run logs
-# Generated training corpus — contains copyrighted source content
+# Generated training corpus - contains copyrighted source content
 # Generated video artifacts (large; regenerate via scripts/video/)
 # Kaggle dataset staging (contains copyrighted source material)
 # locally with: python scripts/prepare_corpus.py
@@ -38,4 +38,40 @@ video/v8/end.mp4
 video/v8/music.mp3
 video/v8/scenes/
 video/v8/title.mp4
+# v8 generated audio/video artifacts
+video/v8/*.wav
+video/v8/*.m4a
+video/v8/concat_video.mp4
+video/v8/cut_list.json
+video/v8/cut_list_manual.json
+video/v8/subtitles.srt
+# v9 generated artifacts (scripts are committed; built mp4s/frames are not)
+video/v9/cli_anim.mp4
+video/v9/cli_anim/
+video/v9/film_v9.mp4
+video/v9/segs/
+video/v9/video_silent.mp4
+# v10 generated artifacts (keep video/v10/script.json as source)
+video/v10/audio/
+video/v10/film_v10.mp4
+video/v10/film_v10.srt
+video/v10/review_frames/
+video/v10/segs/
+video/v10/usecase_ui.mp4
+video/v10/usecase_ui/
+video/v10/video_silent.mp4
+# misc generated dirs
+video/cards/
+video/enhanced/
+video/models/
+video/sora/
+video/tmp_branded/
+video/tmp_gfpgan/
+video/tmp_real/
+# lipsync model trees (large checkpoints, not source)
+.wav2lip/
+.wav2lip-venv/
+gfpgan/
+# mlx prepared training data (regenerate via prepare_corpus + finetune_lora_mlx)
+mlx_data/
 wandb/
