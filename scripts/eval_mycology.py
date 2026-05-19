@@ -123,7 +123,7 @@ def main(args):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
-    p.add_argument("--model", default="unsloth/gemma-3-4b-it-bnb-4bit")
+    p.add_argument("--model", default="unsloth/gemma-4-E4B-it-unsloth-bnb-4bit")
     p.add_argument("--adapter", default=None, help="path to LoRA adapter directory")
     p.add_argument("--use-judge", action="store_true")
     p.add_argument("--judge-model", default="unsloth/Llama-3.1-8B-Instruct-bnb-4bit")

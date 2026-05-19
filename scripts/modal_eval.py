@@ -130,7 +130,7 @@ def evaluate(model: str, adapter_run: str | None, questions: list,
 
 @app.local_entrypoint()
 def main(
-    model: str = "unsloth/gemma-3-4b-it-bnb-4bit",
+    model: str = "unsloth/gemma-4-E4B-it-unsloth-bnb-4bit",
     adapter_run: str = "",
     compare: str = "",
     use_judge: bool = False,

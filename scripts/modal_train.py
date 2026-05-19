@@ -171,7 +171,7 @@ def download_adapter(run_name: str) -> dict:
 
 @app.local_entrypoint()
 def main(shards: str = "shards/*.jsonl",
-         model: str = "unsloth/gemma-3-4b-it-bnb-4bit",
+         model: str = "unsloth/gemma-4-E4B-it-unsloth-bnb-4bit",
          run_name: str = None,
          max_steps: int = -1, epochs: int = 1,
          batch_size: int = 2, grad_accum: int = 8,

@@ -124,7 +124,7 @@ def main(args):
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--model",
-                   default=os.environ.get("BASE_MODEL", "unsloth/gemma-3-4b-it-bnb-4bit"))
+                   default=os.environ.get("BASE_MODEL", "unsloth/gemma-4-E4B-it-unsloth-bnb-4bit"))
     p.add_argument("--shards", default="shards/*.jsonl")
     p.add_argument("--out-dir", default=f"runs/unsloth-{datetime.now().strftime('%Y%m%d-%H%M%S')}")
     p.add_argument("--max-seq-length", type=int, default=2048)
