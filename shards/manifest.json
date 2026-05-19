@@ -1,0 +1,12 @@
+{
+  "shards": [
+    {
+      "file": "magpie_0000.jsonl",
+      "examples": 30,
+      "teacher": "unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
+      "created_at": "2026-05-19T00:46:38"
+    }
+  ],
+  "total_examples": 30,
+  "updated_at": "2026-05-19T00:46:38"
+}

@@ -1,0 +1,13 @@
+torch
+unsloth
+transformers @ git+https://github.com/huggingface/transformers.git
+peft
+trl
+bitsandbytes
+datasets
+accelerate
+huggingface-hub
+sentencepiece
+protobuf
+scipy
+modal
