@@ -72,8 +72,20 @@ def evaluate(model: str, adapter_run: str | None, questions: list,
         return text_tok.decode(out[0][prompt_len:], skip_special_tokens=True).strip()
 
     def grade_mcq(ans, expected):
-        letter = next((c for c in ans.strip().upper() if c in "ABCDE"), None)
-        return 1.0 if letter == expected.upper() else 0.0
+        # Prefer explicit "answer is X" patterns
+        for pat in [
+            r"(?:final|correct)?\s*answer\s*(?:is|:)?\s*[\*_`\s]*\(?([A-E])\)?",
+            r"option\s*\(?([A-E])\)?\s*(?:is|appears|seems)?\s*(?:correct|right|best)",
+            r"\*\*\s*\(?([A-E])\)?\s*[\*_)]",  # **A)** or **A**
+        ]:
+            m = re.search(pat, ans, re.I)
+            if m:
+                return 1.0 if m.group(1).upper() == expected.upper() else 0.0
+        # Fall back: first standalone A-E letter
+        m = re.search(r"\b([A-E])\b", ans)
+        if m:
+            return 1.0 if m.group(1).upper() == expected.upper() else 0.0
+        return 0.0
 
     judge_cache = {"loaded": False}
 

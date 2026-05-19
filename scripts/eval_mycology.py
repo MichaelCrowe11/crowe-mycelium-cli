@@ -52,8 +52,19 @@ def query(name, adapter, prompt, max_new_tokens=300):
 
 
 def grade_mcq(answer, expected):
-    letter = next((c for c in answer.strip().upper() if c in "ABCDE"), None)
-    return 1.0 if letter == expected.upper() else 0.0
+    import re
+    for pat in [
+        r"(?:final|correct)?\s*answer\s*(?:is|:)?\s*[\*_`\s]*\(?([A-E])\)?",
+        r"option\s*\(?([A-E])\)?\s*(?:is|appears|seems)?\s*(?:correct|right|best)",
+        r"\*\*\s*\(?([A-E])\)?\s*[\*_)]",
+    ]:
+        m = re.search(pat, answer, re.I)
+        if m:
+            return 1.0 if m.group(1).upper() == expected.upper() else 0.0
+    m = re.search(r"\b([A-E])\b", answer)
+    if m:
+        return 1.0 if m.group(1).upper() == expected.upper() else 0.0
+    return 0.0
 
 
 def grade_open_with_judge(question, reference, candidate, judge_model):
