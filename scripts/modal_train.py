@@ -90,7 +90,7 @@ def train(run_name: str, model: str, max_seq_length: int = 2048,
     trainer = SFTTrainer(
         model=m, tokenizer=tok, train_dataset=ds,
         dataset_text_field="text", max_seq_length=max_seq_length,
-        dataset_num_proc=2, packing=False,
+        dataset_num_proc=2, packing=True,  # 4x effective examples per step
         args=TrainingArguments(
             per_device_train_batch_size=batch_size,
             gradient_accumulation_steps=grad_accum,

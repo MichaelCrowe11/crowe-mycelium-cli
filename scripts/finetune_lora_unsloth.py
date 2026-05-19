@@ -69,7 +69,7 @@ def main(args):
         dataset_text_field="text",
         max_seq_length=args.max_seq_length,
         dataset_num_proc=2,
-        packing=False,
+        packing=True,  # 4x effective examples per step
         args=TrainingArguments(
             per_device_train_batch_size=args.batch_size,
             gradient_accumulation_steps=args.grad_accum,
