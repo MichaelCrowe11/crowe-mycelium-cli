@@ -41,3 +41,20 @@ def test_fetch_error_returns_empty():
 
     s = DuckDuckGoSearcher(fetch=boom)
     assert s.search("x") == []
+
+
+def test_build_searcher_defaults_to_duckduckgo(monkeypatch):
+    monkeypatch.delenv("CROWE_MYCELIUM_SEARCH_PROVIDER", raising=False)
+    from crowe_mycelium.search import build_searcher, DuckDuckGoSearcher
+
+    assert isinstance(build_searcher(), DuckDuckGoSearcher)
+
+
+def test_build_searcher_unimplemented_provider_raises(monkeypatch):
+    monkeypatch.setenv("CROWE_MYCELIUM_SEARCH_PROVIDER", "brave")
+    from crowe_mycelium.search import build_searcher
+
+    import pytest
+
+    with pytest.raises(NotImplementedError, match="duckduckgo"):
+        build_searcher()

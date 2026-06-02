@@ -85,3 +85,18 @@ class DuckDuckGoSearcher(Searcher):
                 )
             )
         return results
+
+
+def build_searcher(settings=None) -> Searcher:
+    """Pick a search backend. v1 implements DuckDuckGo only; the brave/tavily
+    branch is the reserved seam (add when a key exists)."""
+    import os
+
+    provider = os.environ.get("CROWE_MYCELIUM_SEARCH_PROVIDER", "duckduckgo").lower()
+    if provider == "duckduckgo":
+        return DuckDuckGoSearcher()
+    raise NotImplementedError(
+        f"search provider '{provider}' is not implemented yet. "
+        f"Set CROWE_MYCELIUM_SEARCH_PROVIDER=duckduckgo (keyless) until a "
+        f"Brave/Tavily backend + key is added."
+    )
