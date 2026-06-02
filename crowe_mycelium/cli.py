@@ -20,6 +20,7 @@ from rich.table import Table
 
 from crowe_mycelium import __version__, branding
 from crowe_mycelium import prompt as _prompt
+from crowe_mycelium import wordmark as _wordmark
 from crowe_mycelium.backends import build_backend
 from crowe_mycelium.branding import console
 from crowe_mycelium.config import resolve_settings
@@ -63,7 +64,10 @@ def _chat_loop(ctx) -> None:
     renderer = RichRenderer()
     session = _prompt.build_session()
 
-    console.print(branding.hero(getattr(backend, "label", settings.backend)))
+    start_label = getattr(backend, "label", settings.backend)
+    console.print(_wordmark.render_hero(console.width, start_label))
+    console.print(_wordmark.hud(start_label, __version__))
+    console.print()
     history: list[tuple[str, str]] = []
     while True:
         try:
@@ -106,6 +110,7 @@ def _chat_loop(ctx) -> None:
             renderer.notice("⚠ cloud unreachable — answered from local.")
         history.append(("user", user_msg))
         history.append(("assistant", reply))
+        branding.turn_separator()
 
     branding.footer()
 

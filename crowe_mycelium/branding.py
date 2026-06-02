@@ -100,3 +100,8 @@ def footer() -> None:
 def backend_tag(label: str) -> str:
     """Prompt tag showing the active backend, e.g. [cloud · modal]."""
     return f"[{DIM}]\\[{label}][/]"
+
+
+def turn_separator() -> None:
+    """A thin dim rule between turns so the transcript doesn't read as a wall."""
+    console.print(f"[{DIM}]" + "─" * 24 + "[/]")
