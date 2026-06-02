@@ -107,21 +107,26 @@ def _chat_loop(ctx) -> None:
 
 
 def _doctor_report(settings) -> None:
-    from crowe_mycelium.backends.cloud import CloudModalBackend
     from crowe_mycelium.backends.local import LocalOllamaBackend
 
     local = LocalOllamaBackend()
-    cloud = CloudModalBackend(app=settings.cloud_app, func=settings.cloud_func)
     table = Table(box=box.SIMPLE_HEAVY)
     table.add_column("backend")
     table.add_column("status")
     table.add_column("detail")
     table.add_row("local", "ok" if local.health() else "down", local.store_hint())
-    table.add_row(
-        "cloud",
-        "ok" if cloud.health() else "down",
-        f"modal app {settings.cloud_app} (paid always-on if min_containers=1)",
-    )
+    try:
+        import modal  # noqa: F401
+
+        from crowe_mycelium.backends.cloud import CloudModalBackend
+
+        cloud = CloudModalBackend(app=settings.cloud_app, func=settings.cloud_func)
+        cloud_status = "ok" if cloud.health() else "down"
+        cloud_detail = f"modal app {settings.cloud_app} (paid always-on if min_containers=1)"
+    except ImportError:
+        cloud_status = "down"
+        cloud_detail = "modal SDK not installed (pip install modal)"
+    table.add_row("cloud", cloud_status, cloud_detail)
     console.print(table)
 
 
@@ -136,6 +141,8 @@ def main(ctx, temperature, force_local, force_cloud, force_auto) -> None:
     """Crowe Mycelium — cultivation intelligence on Gemma 4 Mycelium."""
     load_dotenv()
     ctx.ensure_object(dict)
+    if sum([force_local, force_cloud, force_auto]) > 1:
+        raise click.UsageError("--local, --cloud, and --auto are mutually exclusive.")
     ctx.obj["temperature"] = temperature
     ctx.obj["backend"] = (
         "local" if force_local else "cloud" if force_cloud else "auto" if force_auto else None

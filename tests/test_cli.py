@@ -31,3 +31,27 @@ def test_models_lists_the_model():
     result = CliRunner().invoke(main, ["models"])
     assert result.exit_code == 0
     assert "Gemma 4 Mycelium" in result.output
+
+
+def test_run_failure_exits_nonzero(monkeypatch):
+    monkeypatch.setattr(climod, "build_backend", lambda settings: FakeBackend(fail=True))
+    monkeypatch.setattr(climod, "load_system_prompt", lambda: "SYS")
+    result = CliRunner().invoke(main, ["run", "hi"])
+    assert result.exit_code == 1
+
+
+def test_doctor_runs(monkeypatch):
+    import crowe_mycelium.backends.local as localmod
+    from crowe_mycelium.backends.cloud import CloudModalBackend
+
+    monkeypatch.setattr(localmod._model, "check_backend", lambda: (False, "down"))
+    monkeypatch.setattr(CloudModalBackend, "health", lambda self: False)
+    result = CliRunner().invoke(main, ["doctor"])
+    assert result.exit_code == 0
+    assert "local" in result.output and "cloud" in result.output
+
+
+def test_mutually_exclusive_flags():
+    result = CliRunner().invoke(main, ["--local", "--cloud", "run", "hi"])
+    assert result.exit_code != 0
+    assert "mutually exclusive" in result.output
