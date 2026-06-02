@@ -39,6 +39,17 @@ Repository = "https://github.com/crowelogic/crowe-mycelium-cli"
 [project.scripts]
 crowe-mycelium = "crowe_mycelium.cli:main"
 
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0", "ruff>=0.6.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
 [tool.setuptools.packages.find]
 include = ["crowe_mycelium*"]
 
