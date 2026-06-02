@@ -205,5 +205,17 @@ def doctor(ctx) -> None:
     branding.footer()
 
 
+@main.command()
+@click.option("--host", default="127.0.0.1", show_default=True)
+@click.option("--port", default=8014, show_default=True, type=int)
+def serve(host, port) -> None:
+    """Run an OpenAI-compatible /v1 gateway over the mycology model."""
+    import uvicorn
+
+    from crowe_mycelium.serve import build_app
+
+    uvicorn.run(build_app(), host=host, port=port)
+
+
 if __name__ == "__main__":
     main()

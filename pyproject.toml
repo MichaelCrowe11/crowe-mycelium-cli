@@ -42,6 +42,7 @@ crowe-mycelium = "crowe_mycelium.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0.0", "ruff>=0.6.0"]
+serve = ["fastapi>=0.110.0", "uvicorn>=0.29.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
