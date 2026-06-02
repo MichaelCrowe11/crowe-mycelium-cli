@@ -13,3 +13,19 @@ def test_rich_render_returns_full_text():
     # RichRenderer must still return the accumulated answer (used for history).
     out = RichRenderer().render_stream(iter(["**bold** answer"]))
     assert out == "**bold** answer"
+
+
+def test_rich_render_accumulates_multiple_chunks():
+    out = RichRenderer().render_stream(iter(["Increase ", "FAE ", "now."]))
+    assert out == "Increase FAE now."
+
+
+def test_rich_render_propagates_midstream_error():
+    def boom():
+        yield "partial"
+        raise RuntimeError("backend died")
+
+    import pytest
+
+    with pytest.raises(RuntimeError, match="backend died"):
+        RichRenderer().render_stream(boom())
