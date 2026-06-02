@@ -62,6 +62,34 @@ def ollama_tag() -> str:
     return os.environ.get("CROWE_MYCELIUM_OLLAMA_TAG", load_model_spec().ollama_tag)
 
 
+def ollama_timeout_seconds() -> float:
+    """Request timeout for local Ollama calls.
+
+    Gemma 4 E4B can cold-load slowly on 16GB unified-memory Macs. Keep the
+    default high enough for first launch while still allowing demos/tests to
+    tighten it via env.
+    """
+    raw = os.environ.get("CROWE_MYCELIUM_OLLAMA_TIMEOUT_S", "600")
+    try:
+        return max(10.0, float(raw))
+    except ValueError:
+        return 600.0
+
+
+def ollama_think_enabled() -> bool:
+    """Whether to request Ollama thinking-channel output.
+
+    The public CLI should return visible answer text, not spend the whole token
+    budget in a hidden `thinking` field. Advanced users can opt in explicitly.
+    """
+    return os.environ.get("CROWE_MYCELIUM_THINK", "0").lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
 def check_backend() -> tuple[bool, str]:
     """Return (ok, message) for the configured Ollama backend.
 
@@ -85,27 +113,52 @@ def check_backend() -> tuple[bool, str]:
     return True, f"Ollama @ {host}, model {tag}"
 
 
+def _int_env(name: str, default: int, minimum: int) -> int:
+    raw = os.environ.get(name, str(default))
+    try:
+        return max(minimum, int(raw))
+    except ValueError:
+        return default
+
+
 def stream_chat(messages: list[dict], temperature: float = 0.4) -> Iterator[str]:
-    """Stream a chat completion from Ollama. Yields content chunks as they arrive."""
+    """Yield a chat completion from Ollama.
+
+    Ollama 0.24.0 currently behaves poorly with Gemma 4 E4B on the streaming
+    path in this repo: the model may spend the entire budget in `thinking`, and
+    local streaming probes can hang or 500. The non-streaming endpoint with
+    `think: false` returns visible content reliably, so the public CLI uses that
+    deterministic path while preserving the generator API used by cli.py.
+    """
     host = ollama_host()
     tag = ollama_tag()
     payload = {
         "model": tag,
         "messages": messages,
-        "stream": True,
-        "options": {"temperature": temperature},
+        "stream": False,
+        "think": ollama_think_enabled(),
+        "options": {
+            "temperature": temperature,
+            "num_ctx": _int_env("CROWE_MYCELIUM_NUM_CTX", 2048, 512),
+            "num_predict": _int_env("CROWE_MYCELIUM_NUM_PREDICT", 512, 32),
+        },
     }
-    with httpx.stream("POST", f"{host}/api/chat", json=payload, timeout=120.0) as r:
-        r.raise_for_status()
-        for line in r.iter_lines():
-            if not line:
-                continue
-            try:
-                obj = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            chunk = obj.get("message", {}).get("content", "")
-            if chunk:
-                yield chunk
-            if obj.get("done"):
-                break
+    r = httpx.post(
+        f"{host}/api/chat",
+        json=payload,
+        timeout=ollama_timeout_seconds(),
+    )
+    r.raise_for_status()
+    obj = r.json()
+    content = obj.get("message", {}).get("content", "")
+    if content:
+        yield content
+        return
+
+    thinking = obj.get("message", {}).get("thinking", "")
+    if thinking:
+        raise RuntimeError(
+            "Ollama returned hidden thinking but no visible answer. "
+            "Keep CROWE_MYCELIUM_THINK unset or set it to 0."
+        )
+    raise RuntimeError("Ollama returned an empty answer.")

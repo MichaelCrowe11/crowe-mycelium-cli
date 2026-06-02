@@ -21,3 +21,26 @@ def test_local_health_reflects_check_backend(monkeypatch):
 def test_local_store_hint_when_elements_absent(monkeypatch, tmp_path):
     b = LocalOllamaBackend(store=str(tmp_path / "nope"))
     assert "Elements" in b.store_hint()
+
+
+def test_local_defaults_are_not_truncating(monkeypatch):
+    import crowe_mycelium.model as m
+
+    captured = {}
+
+    class FakeResp:
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return {"message": {"content": "ok"}}
+
+    def fake_post(url, json, timeout):
+        captured["options"] = json["options"]
+        return FakeResp()
+
+    monkeypatch.setattr(m.httpx, "post", fake_post)
+    list(m.stream_chat([{"role": "user", "content": "hi"}]))
+    # A full cultivation answer must not be cut off at 160 tokens / 1024 ctx.
+    assert captured["options"]["num_predict"] >= 512
+    assert captured["options"]["num_ctx"] >= 2048
