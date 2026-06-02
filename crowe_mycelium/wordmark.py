@@ -1,8 +1,8 @@
 """Block wordmark + status HUD — peer branding with crowe-logic / deepparallel.
 
-Wide terminals get a multi-line emerald block wordmark; narrow terminals fall
-back to a compact one-line mark. The HUD shows the always-visible context:
-backend, model, GPU, version.
+Wide terminals get a bold multi-line ANSI-shadow block wordmark; narrow
+terminals fall back to a compact one-line mark. The HUD shows the always-visible
+context: backend, model, GPU, version.
 """
 
 from __future__ import annotations
@@ -15,25 +15,33 @@ DIM = "grey50"
 MARK = "◆"
 MODEL_NAME = "gemma-4-mycelium-e4b"
 CLOUD_GPU = "L4"
-NARROW_THRESHOLD = 56  # below this, use the compact mark
+# The block wordmark is 67 cols wide; below this we use the compact mark.
+NARROW_THRESHOLD = 69
 
-# Box-drawing wordmark for "MYCELIUM". Hand-aligned; tweak freely — tests assert
-# line count / compact fallback, not exact glyphs.
-_WORDMARK = "╔╦╗╦ ╦╔═╗╔═╗╦  ╦╦ ╦╔╦╗\n║║║╚╦╝║  ║╣ ║  ║║ ║║║║\n╩ ╩ ╩ ╚═╝╚═╝╩═╝╩╚═╝╩ ╩"
+# ANSI-shadow "MYCELIUM" (generated with pyfiglet, baked static — not a runtime
+# dep). Tests assert line count / compact fallback, not exact glyphs.
+_WORDMARK = (
+    '███╗   ███╗██╗   ██╗ ██████╗███████╗██╗     ██╗██╗   ██╗███╗   ███╗\n'
+    '████╗ ████║╚██╗ ██╔╝██╔════╝██╔════╝██║     ██║██║   ██║████╗ ████║\n'
+    '██╔████╔██║ ╚████╔╝ ██║     █████╗  ██║     ██║██║   ██║██╔████╔██║\n'
+    '██║╚██╔╝██║  ╚██╔╝  ██║     ██╔══╝  ██║     ██║██║   ██║██║╚██╔╝██║\n'
+    '██║ ╚═╝ ██║   ██║   ╚██████╗███████╗███████╗██║╚██████╔╝██║ ╚═╝ ██║\n'
+    '╚═╝     ╚═╝   ╚═╝    ╚═════╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝     ╚═╝'
+)
 
 
 def render_hero(width: int, backend_label: str) -> Text:
-    """The startup hero: block wordmark (wide) or compact mark (narrow)."""
+    """The startup hero: bold block wordmark (wide) or compact mark (narrow)."""
     if width < NARROW_THRESHOLD:
         t = Text()
         t.append(f"{MARK} ", style=EMERALD_BRIGHT)
         t.append("Crowe ", style=f"bold {EMERALD_BRIGHT}")
         t.append("Mycelium", style=f"bold {EMERALD}")
-        t.append("  · cultivation", style=DIM)
+        t.append("  · cultivation intelligence", style=DIM)
         return t
 
     t = Text()
-    t.append("◆ Crowe Logic\n", style=f"bold {EMERALD_BRIGHT}")
+    t.append(f"{MARK} CROWE LOGIC\n\n", style=f"bold {EMERALD_BRIGHT}")
     t.append(_WORDMARK, style=f"bold {EMERALD}")
     t.append("\n  cultivation intelligence", style=DIM)
     return t
