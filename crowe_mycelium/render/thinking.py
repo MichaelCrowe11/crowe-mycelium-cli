@@ -5,38 +5,49 @@ PALETTE = ["green3", "bright_green", "spring_green2", "green4", "dark_sea_green"
 _SPIN = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
 MARK = "⬢"
 
-# Amplified mycelial-strand crest: a bright spore node travels along a strand of
-# nodes, leaving an emerald glow trail — reads as a signal propagating through
-# mycelium. Much more visible than a single spinner char.
-_STRAND_LEN = 22
+# Amplified multi-line mycelial FIELD: several bright spores propagate across a
+# field of strands at different phases, each leaving an emerald glow trail —
+# reads as a living mycelium network colonizing while the model thinks.
+_FIELD_W = 30
+_FIELD_ROWS = 3
 
 
-def _strand(tick: int) -> str:
-    """A row of nodes with one bright travelling spore + a fading glow trail."""
-    head = tick % _STRAND_LEN
-    cells: list[str] = []
-    for i in range(_STRAND_LEN):
-        dist = (head - i) % _STRAND_LEN  # 0 at head, grows behind it
-        if dist == 0:
-            cells.append("[bold bright_green]◆[/]")
-        elif dist == 1:
-            cells.append("[spring_green2]◈[/]")
-        elif dist == 2:
-            cells.append("[green3]◇[/]")
-        elif dist == 3:
-            cells.append("[green4]◌[/]")
-        else:
-            cells.append("[grey30]·[/]")
+def _glyph(dist: int) -> str:
+    """A field cell styled by its distance behind the nearest travelling spore."""
+    if dist == 0:
+        return "[bold bright_green]◆[/]"
+    if dist == 1:
+        return "[spring_green2]◈[/]"
+    if dist == 2:
+        return "[green3]◇[/]"
+    if dist == 3:
+        return "[green4]◌[/]"
+    if dist == 4:
+        return "[dark_sea_green]·[/]"
+    return "[grey30]·[/]"
+
+
+def _field_row(tick: int, row: int) -> str:
+    """One strand with two spores travelling at offset phases."""
+    h1 = (tick + row * 9) % _FIELD_W
+    h2 = (tick + row * 9 + _FIELD_W // 2) % _FIELD_W
+    cells = []
+    for i in range(_FIELD_W):
+        d = min((h1 - i) % _FIELD_W, (h2 - i) % _FIELD_W)
+        cells.append(_glyph(d))
     return "".join(cells)
 
 
 def crest_frame(tick: int, elapsed: int) -> str:
-    """Rich-markup string for one animation frame of the thinking crest."""
-    spin = _SPIN[tick % len(_SPIN)]
+    """Rich-markup string (multi-line) for one frame of the thinking crest."""
     color = PALETTE[tick % len(PALETTE)]
-    strand = _strand(tick)
-    # PALETTE[color] on the lead hex keeps the cycling-color test contract.
-    return (
-        f"[{color}]{MARK}[/] {strand} "
+    spin = _SPIN[tick % len(_SPIN)]
+    top = "   " + _field_row(tick, 0)
+    # Middle strand carries the hex mark + the cycling-color "thinking" label
+    # (keeps the PALETTE[0]/"thinking"/elapsed test contract).
+    mid = (
+        f"[{color}]{MARK}[/]  {_field_row(tick, 1)}  "
         f"[grey50]{spin}[/] [bold {color}]thinking[/] [grey50]· {elapsed}s[/]"
     )
+    bot = "   " + _field_row(tick, 2)
+    return f"{top}\n{mid}\n{bot}"
