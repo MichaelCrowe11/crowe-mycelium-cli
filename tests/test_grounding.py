@@ -18,6 +18,12 @@ def test_needs_live_info_false_for_knowledge_questions():
     assert not needs_live_info("what substrate for oysters")
 
 
+def test_needs_live_info_true_for_research_and_domains():
+    assert needs_live_info("can you research crowelm.com")
+    assert needs_live_info("look up southwest mushrooms")
+    assert needs_live_info("find out about https://example.org")
+
+
 def test_format_grounding_includes_query_results_and_cite_instruction():
     g = format_grounding("oyster price?", RESULTS)
     assert "oyster price?" in g

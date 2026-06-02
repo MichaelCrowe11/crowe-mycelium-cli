@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "crowe-mycelium"
-version = "0.3.0"
+version = "0.4.0"
 description = "Crowe Logic CLI for Gemma 4 Mycelium — offline cultivation intelligence built on Gemma 4."
 readme = "README.md"
 license = { text = "Apache-2.0" }

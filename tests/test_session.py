@@ -34,3 +34,13 @@ def test_unknown_slash_is_handled_noop():
 def test_plain_text_is_not_a_slash():
     r = dispatch_slash("how do I fruit lion's mane?")
     assert r == SlashResult(handled=False)
+
+
+def test_search_with_query_dispatches_with_arg():
+    r = dispatch_slash("/search oyster wholesale prices")
+    assert r.handled and r.action == "search" and r.arg == "oyster wholesale prices"
+
+
+def test_bare_search_dispatches_empty_arg():
+    r = dispatch_slash("/search")
+    assert r.handled and r.action == "search" and r.arg == ""

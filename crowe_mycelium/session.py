@@ -22,6 +22,8 @@ def dispatch_slash(text: str) -> SlashResult:
         return SlashResult(True, SIMPLE[c])
     if c in SWITCH:
         return SlashResult(True, "switch", SWITCH[c])
+    if c == "/search" or c.startswith("/search "):
+        return SlashResult(True, "search", c[len("/search") :].strip())
     if c.startswith("/"):
         return SlashResult(True, "noop")
     return SlashResult(False)

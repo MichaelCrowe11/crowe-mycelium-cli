@@ -19,6 +19,7 @@ from rich import box
 from rich.table import Table
 
 from crowe_mycelium import __version__, branding
+from crowe_mycelium import grounding as _grounding
 from crowe_mycelium import prompt as _prompt
 from crowe_mycelium import wordmark as _wordmark
 from crowe_mycelium.backends import build_backend
@@ -27,7 +28,35 @@ from crowe_mycelium.config import resolve_settings
 from crowe_mycelium.model import load_model_spec, load_system_prompt, ollama_host, ollama_tag
 from crowe_mycelium.render.plain import PlainRenderer
 from crowe_mycelium.render.rich import RichRenderer
+from crowe_mycelium.search import build_searcher
 from crowe_mycelium.session import dispatch_slash
+
+
+def _run_search(query, backend, renderer, system, history, settings) -> None:
+    """Fetch web results, answer grounded with a Sources footer. Degrades to an
+    ungrounded answer if search yields nothing."""
+    try:
+        results = build_searcher(settings).search(query)
+    except NotImplementedError as e:
+        renderer.notice(str(e))
+        results = []
+    if not results:
+        renderer.notice("web search unavailable — answering from knowledge.")
+        user_turn = query
+    else:
+        user_turn = _grounding.format_grounding(query, results)
+    messages = _build_messages(history, system, user_turn)
+    try:
+        reply = renderer.render_stream(backend.stream_chat(messages, settings.temperature))
+    except Exception as e:
+        renderer.error(str(e))
+        return
+    if results:
+        console.print(f"[grey50]{_grounding.sources_text(results)}[/]")
+    if getattr(backend, "fell_back", False):
+        renderer.notice("⚠ cloud unreachable — answered from local.")
+    history.append(("user", query))
+    history.append(("assistant", reply))
 
 
 def _settings(ctx):
@@ -93,6 +122,12 @@ def _chat_loop(ctx) -> None:
                 _print_info(load_model_spec(), settings)
             elif res.action == "doctor":
                 _doctor_report(settings)
+            elif res.action == "search":
+                if not res.arg:
+                    branding.info("usage: /search <query>")
+                else:
+                    _run_search(res.arg, backend, renderer, system, history, settings)
+                    branding.turn_separator()
             elif res.action == "switch":
                 settings = resolve_settings(backend=res.arg, temperature=settings.temperature)
                 backend = build_backend(settings)
@@ -100,6 +135,23 @@ def _chat_loop(ctx) -> None:
             else:
                 branding.info("unknown command. /help")
             continue
+
+        if _grounding.needs_live_info(user_msg):
+            try:
+                ans = (
+                    _prompt.read_input(
+                        session,
+                        "  this looks like it needs current data — search the web? [Y/n] ",
+                    )
+                    .strip()
+                    .lower()
+                )
+            except (EOFError, KeyboardInterrupt):
+                ans = "n"
+            if ans in ("", "y", "yes"):
+                _run_search(user_msg, backend, renderer, system, history, settings)
+                branding.turn_separator()
+                continue
 
         messages = _build_messages(history, system, user_msg)
         try:
