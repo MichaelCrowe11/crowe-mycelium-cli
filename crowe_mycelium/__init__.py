@@ -6,6 +6,6 @@ model identifier per Google's naming guidelines. Crowe Logic provides the
 fine-tune, the prompt scaffolding, the CLI, and the cultivation knowledge.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __model_id__ = "gemma-4-mycelium-e4b"
 __base_model__ = "google/gemma-4-e4b"

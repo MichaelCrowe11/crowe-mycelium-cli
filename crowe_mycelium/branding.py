@@ -29,7 +29,7 @@ def welcome(model_label: str, base_model: str, backend_label: str) -> None:
     body.append("Built on ", style=CROWE_DIM)
     body.append("Gemma", style=f"bold {GEMMA_ACCENT}")
     body.append(f" ({base_model})\n", style=CROWE_DIM)
-    body.append(f"Backend: ", style=CROWE_DIM)
+    body.append("Backend: ", style=CROWE_DIM)
     body.append(backend_label, style="white")
     body.append("\n\nType your question. ", style=CROWE_DIM)
     body.append("/help", style="bold")
