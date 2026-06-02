@@ -1,28 +1,30 @@
-from crowe_mycelium.backends.cloud import CloudModalBackend, flatten_messages
+from crowe_mycelium.backends.cloud import CloudModalBackend
 
 
-def test_flatten_uses_last_user_and_includes_history():
+def test_cloud_sends_full_messages_including_system():
+    captured = {}
+
+    def fake_caller(messages, temperature):
+        captured["messages"] = messages
+        captured["temperature"] = temperature
+        yield "cloud "
+        yield "answer"
+
+    b = CloudModalBackend(caller=fake_caller)
     msgs = [
         {"role": "system", "content": "SYS"},
         {"role": "user", "content": "first"},
         {"role": "assistant", "content": "ans1"},
         {"role": "user", "content": "second"},
     ]
-    out = flatten_messages(msgs)
-    assert "SYS" not in out  # system is baked into the cloud model
-    assert "first" in out and "ans1" in out and "second" in out
-    assert out.rstrip().endswith("second")
+    out = list(b.stream_chat(msgs, temperature=0.5))
+    assert out == ["cloud ", "answer"]
+    # Multi-turn path: full role-separated messages reach the cloud, system included.
+    assert captured["messages"] == msgs
+    assert captured["temperature"] == 0.5
 
 
-def test_cloud_streams_one_chunk_via_injected_caller():
-    captured = {}
-    b = CloudModalBackend(caller=lambda p: (captured.setdefault("p", p), "cloud answer")[-1])
-    out = list(b.stream_chat([{"role": "user", "content": "hi"}]))
-    assert out == ["cloud answer"]
-    assert "hi" in captured["p"]
-
-
-def test_cloud_health_false_when_caller_lookup_raises():
+def test_cloud_health_false_when_probe_raises():
     def boom():
         raise RuntimeError("no modal")
 

@@ -11,7 +11,7 @@ class Settings:
     backend: str = "auto"
     temperature: float = 0.4
     cloud_app: str = "crowe-mycelium-serve"
-    cloud_func: str = "smoke"
+    cloud_func: str = "chat"
 
 
 def resolve_settings(backend: str | None = None, temperature: float | None = None) -> Settings:
@@ -30,5 +30,5 @@ def resolve_settings(backend: str | None = None, temperature: float | None = Non
         backend=be,
         temperature=temp,
         cloud_app=os.environ.get("CROWE_MYCELIUM_CLOUD_APP", "crowe-mycelium-serve"),
-        cloud_func=os.environ.get("CROWE_MYCELIUM_CLOUD_FUNC", "smoke"),
+        cloud_func=os.environ.get("CROWE_MYCELIUM_CLOUD_FUNC", "chat"),
     )
