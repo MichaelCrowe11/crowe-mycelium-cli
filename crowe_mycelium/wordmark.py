@@ -63,3 +63,38 @@ def hud(backend_label: str, version: str, gpu: str | None = CLOUD_GPU) -> Text:
     t.append("   ·   ", style=DIM)
     t.append(f"v{version}", style=DIM)
     return t
+
+
+def animate_hero(console, width: int) -> None:
+    """Animated startup reveal of the block wordmark.
+
+    A left-to-right 'mycelial colonization' sweep: the glyphs fill in column by
+    column with a bright leading edge, then settle to steady emerald. Falls back
+    to a static print on narrow terminals or non-TTYs (piping) so nothing breaks.
+    """
+    import time
+
+    from rich.live import Live
+
+    if width < NARROW_THRESHOLD or not getattr(console, "is_terminal", False):
+        console.print(render_hero(width, ""))
+        return
+
+    rows = _WORDMARK.split("\n")
+    w = max(len(r) for r in rows)
+    padded = [r.ljust(w) for r in rows]
+
+    console.print(Text(f"{MARK} CROWE LOGIC", style=f"bold {EMERALD_BRIGHT}"))
+    with Live(console=console, refresh_per_second=120, transient=False) as live:
+        for c in range(1, w + 1):
+            t = Text()
+            for idx, r in enumerate(padded):
+                shown = r[:c]
+                t.append(shown[:-1], style=f"bold {EMERALD}")
+                t.append(shown[-1], style="bold bright_green")  # glowing edge
+                if idx < len(padded) - 1:
+                    t.append("\n")
+            live.update(t)
+            time.sleep(0.010)
+        live.update(Text(_WORDMARK, style=f"bold {EMERALD}"))  # settle
+    console.print(Text("  cultivation intelligence", style=DIM))
