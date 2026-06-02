@@ -100,6 +100,8 @@ def _chat_loop(ctx) -> None:
         except Exception as e:
             renderer.error(str(e))
             continue
+        if getattr(backend, "fell_back", False):
+            renderer.notice("⚠ cloud unreachable — answered from local.")
         history.append(("user", user_msg))
         history.append(("assistant", reply))
 

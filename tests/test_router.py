@@ -30,6 +30,23 @@ def test_auto_raises_when_both_down():
         list(r.stream_chat(_msgs()))
 
 
+def test_fell_back_flag_tracks_fallback():
+    # cloud healthy -> no fallback
+    r = AutoBackend(
+        cloud=FakeBackend(name="cloud", chunks=["c"], healthy=True),
+        local=FakeBackend(name="local", chunks=["l"], healthy=True),
+    )
+    list(r.stream_chat(_msgs()))
+    assert r.fell_back is False
+    # cloud down, local up -> fell back
+    r2 = AutoBackend(
+        cloud=FakeBackend(name="cloud", healthy=False),
+        local=FakeBackend(name="local", chunks=["l"], healthy=True),
+    )
+    list(r2.stream_chat(_msgs()))
+    assert r2.fell_back is True
+
+
 def test_escalate_seam_is_stored_but_unused_in_phase1():
     esc = FakeBackend(name="forge")
     r = AutoBackend(cloud=FakeBackend(), local=FakeBackend(), escalate=esc)

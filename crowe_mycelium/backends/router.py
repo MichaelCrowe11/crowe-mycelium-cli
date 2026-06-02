@@ -16,24 +16,25 @@ class AutoBackend(Backend):
         self.local = local
         self.escalate = escalate
         self._active: Optional[Backend] = None
+        # True after a turn where cloud was unreachable and we used local instead.
+        # The CLI reads this to surface a "⚠ cloud unreachable → local" notice.
+        self.fell_back: bool = False
 
     @property
     def label(self) -> str:
         return self._active.label if self._active else "auto · cloud-first"
 
-    def _choose(self) -> Optional[Backend]:
-        if self.cloud.health():
-            return self.cloud
-        if self.local.health():
-            return self.local
-        return None
-
     def health(self) -> bool:
         return self.cloud.health() or self.local.health()
 
     def stream_chat(self, messages, temperature: float = 0.4) -> Iterator[str]:
-        chosen = self._choose()
-        if chosen is None:
+        # Probe cloud once (this value also decides fell_back) — no double probe.
+        if self.cloud.health():
+            chosen, self.fell_back = self.cloud, False
+        elif self.local.health():
+            chosen, self.fell_back = self.local, True
+        else:
+            self.fell_back = False
             raise RuntimeError(
                 "No backend available: cloud unreachable and local (Elements/Ollama) "
                 "is down. Plug in Elements, or check the Modal app "
