@@ -62,3 +62,8 @@ Gemma 4 Mycelium retains "Gemma" in its name per Google's Gemma model naming req
 ## Acknowledgements
 
 Built on **Gemma** by Google DeepMind. This project was developed for the [Gemma 4 Good Hackathon](https://kaggle.com/competitions/gemma-4-good-hackathon).
+
+## Unreleased
+- Unified CLI: `crowelm-cloud` / `crowelm-mycelium` are now thin shims over
+  `crowe-mycelium --cloud` / `--local`. Old standalone versions are backed up at
+  `~/.local/bin/crowelm-cloud.idle-backup` and `~/.local/bin/crowelm-mycelium.ollama-backup`.
