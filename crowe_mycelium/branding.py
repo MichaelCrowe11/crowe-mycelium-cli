@@ -67,3 +67,36 @@ def attribution_footer() -> None:
         f"Use is subject to the Gemma Terms of Use "
         f"(https://ai.google.dev/gemma/terms).[/]"
     )
+
+
+# --- Emerald peer-design palette (Phase 1 redesign) ---
+EMERALD = "green3"
+EMERALD_BRIGHT = "bright_green"
+DIM = "grey50"
+MARK = "◆"
+
+
+def hero(backend_label: str) -> Text:
+    """Clean, Crowe-first welcome line. Gemma attribution is NOT here (footer)."""
+    t = Text()
+    t.append(f"{MARK} ", style=EMERALD_BRIGHT)
+    t.append("Crowe Logic ", style=f"bold {EMERALD_BRIGHT}")
+    t.append("· ", style=DIM)
+    t.append("Mycelium", style=f"bold {EMERALD}")
+    t.append("        cultivation", style=DIM)
+    t.append(f"\n  backend: {backend_label}   ·   /help", style=DIM)
+    return t
+
+
+def footer_text() -> str:
+    """Required Gemma attribution — rendered dim, once per session."""
+    return "built with Gemma · Gemma Terms apply (https://ai.google.dev/gemma/terms)"
+
+
+def footer() -> None:
+    console.print(f"[{DIM}]{footer_text()}[/]")
+
+
+def backend_tag(label: str) -> str:
+    """Prompt tag showing the active backend, e.g. [cloud · modal]."""
+    return f"[{DIM}]\\[{label}][/]"
