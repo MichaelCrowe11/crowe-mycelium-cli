@@ -65,8 +65,9 @@ def _chat_loop(ctx) -> None:
     session = _prompt.build_session()
 
     start_label = getattr(backend, "label", settings.backend)
+    start_gpu = None if settings.backend == "local" else _wordmark.CLOUD_GPU
     console.print(_wordmark.render_hero(console.width, start_label))
-    console.print(_wordmark.hud(start_label, __version__))
+    console.print(_wordmark.hud(start_label, __version__, gpu=start_gpu))
     console.print()
     history: list[tuple[str, str]] = []
     while True:

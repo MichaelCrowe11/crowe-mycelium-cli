@@ -21,12 +21,12 @@ NARROW_THRESHOLD = 69
 # ANSI-shadow "MYCELIUM" (generated with pyfiglet, baked static — not a runtime
 # dep). Tests assert line count / compact fallback, not exact glyphs.
 _WORDMARK = (
-    '███╗   ███╗██╗   ██╗ ██████╗███████╗██╗     ██╗██╗   ██╗███╗   ███╗\n'
-    '████╗ ████║╚██╗ ██╔╝██╔════╝██╔════╝██║     ██║██║   ██║████╗ ████║\n'
-    '██╔████╔██║ ╚████╔╝ ██║     █████╗  ██║     ██║██║   ██║██╔████╔██║\n'
-    '██║╚██╔╝██║  ╚██╔╝  ██║     ██╔══╝  ██║     ██║██║   ██║██║╚██╔╝██║\n'
-    '██║ ╚═╝ ██║   ██║   ╚██████╗███████╗███████╗██║╚██████╔╝██║ ╚═╝ ██║\n'
-    '╚═╝     ╚═╝   ╚═╝    ╚═════╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝     ╚═╝'
+    "███╗   ███╗██╗   ██╗ ██████╗███████╗██╗     ██╗██╗   ██╗███╗   ███╗\n"
+    "████╗ ████║╚██╗ ██╔╝██╔════╝██╔════╝██║     ██║██║   ██║████╗ ████║\n"
+    "██╔████╔██║ ╚████╔╝ ██║     █████╗  ██║     ██║██║   ██║██╔████╔██║\n"
+    "██║╚██╔╝██║  ╚██╔╝  ██║     ██╔══╝  ██║     ██║██║   ██║██║╚██╔╝██║\n"
+    "██║ ╚═╝ ██║   ██║   ╚██████╗███████╗███████╗██║╚██████╔╝██║ ╚═╝ ██║\n"
+    "╚═╝     ╚═╝   ╚═╝    ╚═════╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝     ╚═╝"
 )
 
 
@@ -47,12 +47,17 @@ def render_hero(width: int, backend_label: str) -> Text:
     return t
 
 
-def hud(backend_label: str, version: str, gpu: str = CLOUD_GPU) -> Text:
-    """Always-visible status line: backend · model · gpu · version."""
+def hud(backend_label: str, version: str, gpu: str | None = CLOUD_GPU) -> Text:
+    """Always-visible status line: backend · [gpu ·] model · version.
+
+    `gpu` is shown only when set — pass None for local (no cloud GPU) so the
+    HUD doesn't misleadingly claim an L4 for on-device inference.
+    """
     t = Text()
     t.append("backend ", style=DIM)
     t.append(backend_label, style="white")
-    t.append(f" ({gpu})", style=DIM)
+    if gpu:
+        t.append(f" ({gpu})", style=DIM)
     t.append("   ·   model ", style=DIM)
     t.append(MODEL_NAME, style="white")
     t.append("   ·   ", style=DIM)
