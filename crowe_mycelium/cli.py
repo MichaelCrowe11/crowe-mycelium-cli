@@ -19,6 +19,7 @@ from rich import box
 from rich.table import Table
 
 from crowe_mycelium import __version__, branding
+from crowe_mycelium import prompt as _prompt
 from crowe_mycelium.backends import build_backend
 from crowe_mycelium.branding import console
 from crowe_mycelium.config import resolve_settings
@@ -60,13 +61,14 @@ def _chat_loop(ctx) -> None:
     backend = build_backend(settings)
     system = load_system_prompt()
     renderer = RichRenderer()
+    session = _prompt.build_session()
 
     console.print(branding.hero(getattr(backend, "label", settings.backend)))
     history: list[tuple[str, str]] = []
     while True:
         try:
-            tag = branding.backend_tag(getattr(backend, "label", settings.backend))
-            user_msg = console.input(f"{tag} {branding.user_prefix()}▸ ").strip()
+            label = getattr(backend, "label", settings.backend)
+            user_msg = _prompt.read_input(session, f"[{label}] ▸ ").strip()
         except (EOFError, KeyboardInterrupt):
             console.print()
             break
