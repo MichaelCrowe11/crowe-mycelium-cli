@@ -136,6 +136,12 @@ def _chat_loop(ctx) -> None:
                 branding.info("unknown command. /help")
             continue
 
+        direct_q = _grounding.extract_search_query(user_msg)
+        if direct_q:
+            _run_search(direct_q, backend, renderer, system, history, settings)
+            branding.turn_separator()
+            continue
+
         if _grounding.needs_live_info(user_msg):
             try:
                 ans = (
