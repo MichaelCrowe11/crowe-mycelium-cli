@@ -44,3 +44,18 @@ def test_search_with_query_dispatches_with_arg():
 def test_bare_search_dispatches_empty_arg():
     r = dispatch_slash("/search")
     assert r.handled and r.action == "search" and r.arg == ""
+
+
+def test_deep_with_query_dispatches_with_arg():
+    r = dispatch_slash("/deep how do I diagnose green mold")
+    assert r.handled and r.action == "deep" and r.arg == "how do I diagnose green mold"
+
+
+def test_deep_web_arg_preserved():
+    r = dispatch_slash("/deep web oyster prices")
+    assert r.handled and r.action == "deep" and r.arg == "web oyster prices"
+
+
+def test_bare_deep_dispatches_empty_arg():
+    r = dispatch_slash("/deep")
+    assert r.handled and r.action == "deep" and r.arg == ""

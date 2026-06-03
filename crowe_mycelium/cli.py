@@ -19,6 +19,7 @@ from rich import box
 from rich.table import Table
 
 from crowe_mycelium import __version__, branding
+from crowe_mycelium import deep as _deep
 from crowe_mycelium import grounding as _grounding
 from crowe_mycelium import prompt as _prompt
 from crowe_mycelium import wordmark as _wordmark
@@ -127,6 +128,26 @@ def _chat_loop(ctx) -> None:
                     branding.info("usage: /search <query>")
                 else:
                     _run_search(res.arg, backend, renderer, system, history, settings)
+                    branding.turn_separator()
+            elif res.action == "deep":
+                arg = res.arg
+                force_web = False
+                if arg.startswith("web "):
+                    force_web = True
+                    arg = arg[len("web ") :].strip()
+                if not arg:
+                    branding.info("usage: /deep <question>  (or /deep web <question>)")
+                else:
+                    _deep.run_deep(
+                        arg,
+                        backend,
+                        system,
+                        history,
+                        settings,
+                        renderer,
+                        _build_messages,
+                        force_web=force_web,
+                    )
                     branding.turn_separator()
             elif res.action == "switch":
                 settings = resolve_settings(backend=res.arg, temperature=settings.temperature)
