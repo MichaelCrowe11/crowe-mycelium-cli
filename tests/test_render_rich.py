@@ -29,3 +29,24 @@ def test_rich_render_propagates_midstream_error():
 
     with pytest.raises(RuntimeError, match="backend died"):
         RichRenderer().render_stream(boom())
+
+
+def test_crest_frame_accepts_custom_label():
+    from crowe_mycelium.render.thinking import crest_frame
+
+    assert "deliberating" in crest_frame(0, 3, label="deliberating")
+    assert "thinking" in crest_frame(0, 3)  # default unchanged
+
+
+def test_rich_deliberate_runs_fn_and_returns_result():
+    assert RichRenderer().deliberate("working", lambda: "DONE") == "DONE"
+
+
+def test_rich_deliberate_propagates_error():
+    import pytest
+
+    def boom():
+        raise RuntimeError("sample died")
+
+    with pytest.raises(RuntimeError, match="sample died"):
+        RichRenderer().deliberate("working", boom)

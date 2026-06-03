@@ -13,6 +13,12 @@ class Renderer(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def deliberate(self, label: str, fn) -> str:
+        """Run `fn` (a no-arg callable returning text) while showing a labeled
+        working indicator; return fn()'s result. Used to collect hidden samples."""
+        raise NotImplementedError
+
+    @abstractmethod
     def notice(self, msg: str) -> None:
         raise NotImplementedError
 

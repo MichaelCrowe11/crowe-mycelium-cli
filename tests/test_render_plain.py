@@ -17,3 +17,7 @@ def test_plain_diagnostics_go_to_stderr(capsys):
     assert captured.out == ""
     assert "switched to local" in captured.err
     assert "error: cloud down" in captured.err
+
+
+def test_plain_deliberate_runs_fn_and_returns_result():
+    assert PlainRenderer().deliberate("working", lambda: "DONE") == "DONE"

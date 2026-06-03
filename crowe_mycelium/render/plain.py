@@ -19,6 +19,10 @@ class PlainRenderer(Renderer):
         sys.stdout.flush()
         return "".join(parts)
 
+    def deliberate(self, label: str, fn) -> str:
+        print(label, file=sys.stderr)
+        return fn()
+
     def notice(self, msg: str) -> None:
         print(msg, file=sys.stderr)
 

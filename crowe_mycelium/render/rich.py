@@ -60,6 +60,31 @@ class RichRenderer(Renderer):
             console.print(Markdown(text))
         return text
 
+    def deliberate(self, label: str, fn) -> str:
+        box: dict = {}
+
+        def run():
+            try:
+                box["result"] = fn()
+            except BaseException as e:  # surfaced after the live region closes
+                box["err"] = e
+            finally:
+                box["done"] = True
+
+        th = threading.Thread(target=run, daemon=True)
+        t0 = time.time()
+        th.start()
+        with Live(console=console, refresh_per_second=30, transient=True) as live:
+            tick = 0
+            while not box.get("done"):
+                live.update(Text.from_markup(crest_frame(tick, int(time.time() - t0), label=label)))
+                tick += 1
+                time.sleep(0.05)
+        th.join()
+        if "err" in box:
+            raise box["err"]
+        return box.get("result", "")
+
     def notice(self, msg: str) -> None:
         console.print(f"[grey50]{msg}[/]")
 
