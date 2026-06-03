@@ -112,9 +112,11 @@ def smoke(prompt: str = "What CO2 range for oyster fruiting? One short sentence.
     return resp["message"]["content"]
 
 
-# The always-warm box now backs `chat` (the CLI's streaming path), not `smoke`.
-# min_containers=1 keeps ONE L4 warm 24/7 so the cloud chat path never cold-starts.
-@app.function(gpu=GPU, timeout=600, min_containers=1)
+# Scale-to-zero: ~$0 when idle (vs an always-warm L4 ~= $576/mo). The model is
+# baked into the image, so a cold start is just container boot (~2-3 min on the
+# first call after idle), NOT a 9.6 GB re-download; warm calls stay fast within
+# scaledown_window. To kill cold starts for heavy use, set min_containers=1.
+@app.function(gpu=GPU, timeout=600, min_containers=0, scaledown_window=300)
 def chat(messages: list, temperature: float = 0.4):
     """Stream a chat completion token-by-token from the baked-in model.
 
