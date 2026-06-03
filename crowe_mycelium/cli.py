@@ -132,9 +132,9 @@ def _chat_loop(ctx) -> None:
             elif res.action == "deep":
                 arg = res.arg
                 force_web = False
-                if arg.startswith("web "):
+                if arg == "web" or arg.startswith("web "):
                     force_web = True
-                    arg = arg[len("web ") :].strip()
+                    arg = arg[len("web") :].strip()
                 if not arg:
                     branding.info("usage: /deep <question>  (or /deep web <question>)")
                 else:

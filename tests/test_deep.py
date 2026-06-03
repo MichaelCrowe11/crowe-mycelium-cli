@@ -123,3 +123,25 @@ def test_run_deep_grounds_when_query_needs_live_info(monkeypatch):
     deep.run_deep("current oyster prices", be, "SYS", [], Settings(), r, bm)
     assert "http://src" in captured["user"]  # grounding injected into the turn
     assert "[1]" in captured["user"]
+
+
+def test_run_deep_force_web_grounds_even_without_live_signal(monkeypatch):
+    monkeypatch.setenv("CROWE_MYCELIUM_DEEP_SAMPLES", "2")
+
+    class _FakeSearcher:
+        def search(self, query, max_results=5):
+            return [SearchResult("T", "http://forced", "snip")]
+
+    monkeypatch.setattr(deep, "build_searcher", lambda settings: _FakeSearcher())
+    be = _DeepBackend(samples=["s1", "s2"], judge="rec")
+    r = _RecRenderer()
+    captured = {}
+
+    def bm(history, system, user):
+        captured["user"] = user
+        return [{"role": "user", "content": user}]
+
+    # A plain knowledge question (no live-info signal), but force_web=True must
+    # still ground it in a search.
+    deep.run_deep("how do I fruit lion's mane", be, "SYS", [], Settings(), r, bm, force_web=True)
+    assert "http://forced" in captured["user"]
